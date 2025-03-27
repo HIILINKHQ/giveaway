@@ -5,12 +5,12 @@ import { FaDiscord, FaXTwitter } from "react-icons/fa6";
 const datas = [
   {
     icon: FaXTwitter,
-    path: "https://x.com/WinPad_io",
+    path: "https://x.com/hiilink",
   },
-  {
-    icon: FaDiscord,
-    path: "https://discord.gg",
-  },
+  // {
+  //   icon: FaDiscord,
+  //   path: "https://discord.gg",
+  // },
 ];
 
 const Socials = () => {

@@ -10,7 +10,7 @@ const Footer = () => {
     <VStack w="100%" maxW={MAXW} py="24px" zIndex={1}> 
       <HStack spacing="12px" fontSize="16px">
         <Socials />
-        <Link href={"mailto:noreply@windpad.com"} target="_blank">
+        <Link href={"mailto:contact@hii.link"} target="_blank">
           <Box
             color="rgba(255,255,255,1)"
             transition="ease-out 0.3s"

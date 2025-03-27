@@ -30,6 +30,7 @@ import {
   Box,
   Switch,
   Center,
+  Select,
 } from "@chakra-ui/react";
 import {
   useAccount,
@@ -144,6 +145,15 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
 
   const toast = useToast();
 
+  const { data : CREAION_COST } =
+  useReadContract({
+   chainId : apeChain.id,
+   address : contract_addr as `0x${string}`,
+   functionName : "CREATION_COST",
+   abi
+  });
+
+  console.log("CREAION_COST",CREAION_COST)
   const { writeContractAsync, isPending, data: hash } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -214,7 +224,7 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
         _entryNFT,
       ];
 
-      const value = Number(parseEther(nativeAmount.toString())) + 1;
+      const value = parseEther(nativeAmount.toString()) + BigInt(CREAION_COST as bigint);
 
       console.log(value)
       console.log(args)
@@ -226,7 +236,7 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
         abi,
         functionName: "createMatch",
         args,
-        value : BigInt(value), // fix the current creation cost
+        value : !prizeType ? CREAION_COST as bigint : BigInt(value), // fix the current creation cost
       });
 
       // console.log("res", res);
@@ -405,6 +415,33 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
                       </VStack>
                     )}
                   </VStack>
+                  <VStack spacing={4} w="100%">
+                    <VStack spacing="0" alignItems="flex-start" w="100%">
+                      <Text
+                        fontSize="18px"
+                        fontWeight={600}
+                        textTransform="uppercase"
+                      >
+                        3. Task
+                      </Text>
+                      <Text fontSize="13px" opacity={0.5}>
+                        Select only one task on X
+                      </Text>
+                    </VStack>
+                 <HStack w="100%">
+                 <Input
+                      flex={2}
+                      placeholder="Copy task URL"
+                    />
+                    <Select flex={1}>
+                      <option style={{color: "black"}}> Like</option>
+                      <option style={{color: "black"}}>Follow</option>
+                      <option style={{color: "black"}}>Retweet</option>
+                      <option style={{color: "black"}}>Comment</option>
+                    </Select>
+                 </HStack>
+                  
+                  </VStack>
                 </VStack>
                 <Box flex={1.5}>
                   <VStack
@@ -422,7 +459,7 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
                         fontWeight={600}
                         textTransform="uppercase"
                       >
-                        3. Prize Type
+                        4. Prize Type
                       </Text>
                       <Text fontSize="13px" opacity={0.5}>
                         What asset you want to giveaway.
@@ -493,18 +530,18 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
             )}
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter >
             {address ? (
-              <HStack>
+              <HStack py="10px">
                 {" "}
-                <Button
+              {!prizeType ?  <Button
                   colorScheme="blue"
                   mr={3}
                   onClick={onApproveNFT}
                   isLoading={isPending || isConfirming}
                 >
                   Approve
-                </Button>
+                </Button> : null}
                 <Button
                   colorScheme="blue"
                   mr={3}

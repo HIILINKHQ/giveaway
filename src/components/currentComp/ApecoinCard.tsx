@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { LuExternalLink } from "react-icons/lu";
 import { useEffect, useState } from "react";
+import { formatEther, parseEther } from "viem";
 
 type NftCardProps = {
   prizeId: bigint;
@@ -52,7 +53,7 @@ const ApecoinCard = ({ prizeId }: NftCardProps) => {
         <VStack pt="12px" w="100%" px="10px">
           <HStack justifyContent="center" w="100%">
             <Text fontSize="18px" isTruncated >
-            {Number(prizeId ?? 0)} $APE GIVEAWAY
+            {formatEther(prizeId ?? 0n)} $APE GIVEAWAY
             </Text>
           
           </HStack>
