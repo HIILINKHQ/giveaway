@@ -86,14 +86,18 @@ const NFTGallery = ({
 
   return (
     <VStack w="100%" align="flex-start" spacing={4} >
-      <Text fontSize="2xl" fontWeight="bold">
+  <HStack alignItems="center">
+  <Text fontSize="2xl" fontWeight="bold">
         Your NFTs
+      </Text>    <Text fontSize="14px" opacity={0.5} pt="6px">
+        / {tokens?.length} found /
       </Text>
+  </HStack>
 
       {!isLoadFinished ? (
         <Spinner size="lg" />
       ) : (
-        <SimpleGrid columns={5} w="100%" spacing="10px">
+        <SimpleGrid columns={[3,4,5, 5]} w="100%" spacing="10px">
             {tokens.map((token, idx) => {
               const isSelected =
                 address === token.token.contract &&

@@ -47,7 +47,7 @@ const PastComp = ({ data, refetch }: CurrentCompProps) => {
   const toast = useToast();
 
   return (
-    <Join matchId={id ?? 0n} refetch={refetch} allowedTiers={data.allowedTiers}>
+  
       <VStack
         w="100%"
         maxW={MAXW}
@@ -190,7 +190,7 @@ const PastComp = ({ data, refetch }: CurrentCompProps) => {
 
         <Box className="grainy-bg" opacity={0.2} zIndex={-1} />
       </VStack>
-    </Join>
+
   );
 
   return <CurrentCompLoader />;

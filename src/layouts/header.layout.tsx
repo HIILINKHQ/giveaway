@@ -82,20 +82,20 @@ const Header = () => {
         {/* <HStack spacing="48px">
         <Hamburger />
         </HStack> */}
-        <HStack   spacing="24px">
+       <HStack>
           <Link href="/">
             <HStack pos="relative" alignItems="flex-end">
              <Image src="/hiilink_header.avif" h="36px"/>
             
             </HStack>
           </Link>
-          <Link href="/history">
-          <Text fontWeight={400} fontSize="14px">HISTORY</Text>
-          </Link>
+         
         </HStack>
-        <HStack>
         
-      
+        <HStack   spacing="24px">
+        <Link href="/history">
+          <Text fontWeight={400} fontSize="16px" className={`${orbitron.className} header_gradient`}>History</Text>
+          </Link>
           <Box display={["none", null, "block", null]}>
             <WalletConnector />
           </Box>

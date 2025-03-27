@@ -382,7 +382,15 @@ body {
 }
 
 .gradient_text_bonus {
-  background: linear-gradient(160deg, white 20%, #07daff 100%);
+  background: linear-gradient(160deg, white 20%, #292929 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+.header_gradient {
+  background-image: radial-gradient(123% 75% at 50% 50%, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%);;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

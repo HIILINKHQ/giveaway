@@ -35,19 +35,21 @@ type CurrentCompProps = {
     prizeType: number;
     prizeId: bigint;
     creator: string;
+    entryNFTAddress : string
   };
+  
   /* eslint-disable @typescript-eslint/no-explicit-any */
   refetch: any;
 };
 
 const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
-  const { prizeAddress, prizeId, totalEntries, endDate, id } = data;
+  const { prizeAddress, prizeId, totalEntries, endDate, id , entryNFTAddress} = data;
 
   console.log("data", data);
   const toast = useToast();
 
   return (
-    <Join matchId={id ?? 0n} refetch={refetch} allowedTiers={data.allowedTiers}>
+    <Join matchId={id ?? 0n} refetch={refetch} entryNFTAddress={entryNFTAddress} >
       <VStack
         w="100%"
         maxW={MAXW}

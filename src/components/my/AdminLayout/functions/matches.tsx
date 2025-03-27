@@ -279,8 +279,9 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
                 pos="relative"
                 alignItems="flex-start"
                 spacing="32px"
+                flexDir={["column", null, "row", null]}
               >
-                <VStack flex={1} pos="sticky" top="0" spacing="20px">
+                <VStack  w="100%" flex={1}  pos={["relative","relative","sticky","sticky"]} top="0" spacing="20px">
                   <VStack spacing={4} w="100%">
                     <VStack spacing="0" alignItems="flex-start" w="100%">
                       <Text
@@ -443,11 +444,11 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
                   
                   </VStack>
                 </VStack>
-                <Box flex={1.5}>
+                <Box flex={1.5} w="100%">
                   <VStack
                     spacing={4}
                     w="100%"
-                    pos="sticky"
+                    pos={["relative","relative","sticky","sticky"]}
                     top="-10px"
                     bg="black"
                     zIndex={2}
@@ -508,7 +509,7 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
                       nftDetails={nftDetails}
                     />
                   ) : (
-                    <VStack py="24px" flexGrow={1}>
+                    <VStack py="24px" flexGrow={1} w="100%">
                       <Text fontSize="14px" w="100%" textAlign="left">
                         The prize $APE amount
                       </Text>
