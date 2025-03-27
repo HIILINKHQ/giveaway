@@ -49,6 +49,7 @@ import {
 } from "react-icons/hi2";
 import { formatAddress } from "@/utils/helpers/formatAddress";
 import WalletConnector from "@/utils/connectKit.custom";
+import Link from "next/link";
 
 type EntryType =
   | {
@@ -84,6 +85,7 @@ const Join = ({
   entryNFTAddress: string;
 }) => {
   const [entryId, setEntryId] = useState(1);
+  const [tmpClicked, setTmpClicked] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
@@ -260,12 +262,12 @@ const Join = ({
                 >
                   You are joined
                 </Text>
-              ) : (
+              ) : tmpClicked ? (
                 <Button
                   isDisabled={!isEligible}
                   flex={1}
-                  colorScheme="blue"
                   mr={3}
+                  colorScheme="blue"
                   onClick={onJoin}
                   isLoading={isPending || isConfirming}
                   bg="linear-gradient(50deg,rgb(15, 15, 15),rgb(32, 32, 32))"
@@ -276,9 +278,42 @@ const Join = ({
                 >
                   JOIN NOW
                 </Button>
+              ) : (
+                <VStack w="100%">
+                  <Text
+                    fontSize="13px"
+                    w="100%"
+                    textAlign="center"
+                    opacity={0.5}
+                    pt="20px"
+                  >
+                    After completing the task, you will be available to join.
+                  </Text>
+
+                  <Link
+                    href="https://x.com/hiilink"
+                    target="_blank"
+                    style={{ width: "100%" }}
+                  >
+                    <Button
+                      onClick={() => setTmpClicked(true)}
+                      bg="linear-gradient(50deg,rgb(15, 15, 15),rgb(32, 32, 32))"
+                      border="1px solid rgba(255,255,255,.1)"
+                      _hover={{
+                        borderColor: "white",
+                      }}
+                      colorScheme="blue"
+                      w="100%"
+                    >
+                      Do task
+                    </Button>
+                  </Link>
+                </VStack>
               )
             ) : (
-              <WalletConnector />
+              <Center w="100%">
+                <WalletConnector />
+              </Center>
             )}
           </ModalFooter>
           <Box className="grainy-bg" opacity={0.05} />
