@@ -1,0 +1,19 @@
+
+.carousel-container{
+    border: 1px solid rgba(255,255,255,.1);
+    transition: ease-out 0.2s;
+}
+
+.carousel-container:hover{
+    border-color: rgba(255,255,255,.3);
+}
+
+.carousel-container:hover .carousel-image{
+    transform: scale(1.05);
+    /* zoom: 150%; */
+    
+}
+
+.carousel-image{
+    transition: ease-out 0.3s;
+}
