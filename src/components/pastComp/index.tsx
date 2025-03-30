@@ -212,22 +212,7 @@ const PastComp = ({ data, refetch }: CurrentCompProps) => {
           <Text>{formatAddress(data?.winner)}</Text>
         </VStack>
 
-        <Box
-          className="animated-border-box"
-          _before={{
-            backgroundImage:
-              "conic-gradient(rgba(0, 0, 0, 0),#07daff, rgba(0, 0, 0, 0) 25%)",
-          }}
-          zIndex={1}
-        />
-        <Box
-          className="animated-border-box-glow"
-          _before={{
-            backgroundImage:
-              "conic-gradient(rgba(0, 0, 0, 0),#07daff, rgba(0, 0, 0, 0) 25%)",
-          }}
-          zIndex={1}
-        />
+     
       </Box></Link> : <HStack flexGrow={1} color="white" zIndex={1} justifyContent="center" className={orbitron.className} opacity={1}>
         <Text>Match Cancelled.</Text></HStack>}
 

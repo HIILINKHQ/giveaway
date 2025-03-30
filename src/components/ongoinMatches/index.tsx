@@ -1,16 +1,21 @@
 "use client";
 
-import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import { useReadContract } from "wagmi";
+import { HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { useAccount, useReadContract } from "wagmi";
 import abi from "@/contract/abis/winpad.abi.json";
 import { apeChain } from "viem/chains";
 import CurrentComp from "../currentComp";
 import { orbitron } from "@/fonts";
 import ReadyMatch from "../currentComp/readyMatch";
 import CreateMatch from "../my/AdminLayout/functions/matches";
+import MyFilter from "./myFilter";
+import { useState } from "react";
 
 const OnGoingMatches = () => {
   const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
+  const [isAll, setIsAll] = useState(false);
+
+  const { address } = useAccount();
 
   const { data, refetch } = useReadContract({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -32,8 +37,6 @@ const OnGoingMatches = () => {
     args: [0, 100],
   });
 
-  console.log("getOngoingMatches", data, readyMatches);
-
   return (
     <VStack w="100%" spacing="32px" pt="24px">
       <VStack>
@@ -48,20 +51,35 @@ const OnGoingMatches = () => {
         <Text color="white" fontWeight={200}>
           Create by everyone , attend everyone.
         </Text>
-        <CreateMatch refetch={refetch}/>
+        <CreateMatch refetch={refetch} />
       </VStack>
+      {address ? (
+        <HStack w="100%" justifyContent="flex-end">
+          <MyFilter setIsAll={setIsAll} isAll={isAll} />
+        </HStack>
+      ) : null}
       <SimpleGrid w="100%" columns={[1, 2, 3, 4]} spacing="10px">
         {/* eslint-disable @typescript-eslint/no-explicit-any */}
-        {(data as any)?.map((el: bigint) => (
-          <CurrentComp data={el as any} key={el} refetch={refetch} />
-        ))}
-        {(readyMatches as any)?.map((el: bigint) => (
-          <ReadyMatch
-            data={el as any}
-            key={`${Number(el)}_ready`}
-            refetch={refetchReady}
-          />
-        ))}
+        {(data as any)
+          ?.filter((el: { creator: string }) =>
+            isAll ? true : address ? el.creator === address : true
+          )
+          ?.reverse()
+          ?.map((el: bigint) => (
+            <CurrentComp data={el as any} key={el} refetch={refetch} />
+          ))}
+        {(readyMatches as any)
+          ?.filter((el: { creator: string }) =>
+            isAll ? true : address ? el.creator === address : true
+          )
+          ?.reverse()
+          ?.map((el: bigint) => (
+            <ReadyMatch
+              data={el as any}
+              key={`${Number(el)}_ready`}
+              refetch={refetchReady}
+            />
+          ))}
       </SimpleGrid>
     </VStack>
   );

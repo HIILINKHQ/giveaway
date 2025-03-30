@@ -587,14 +587,17 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
 
           <ModalFooter>
             {address ? (
-              <HStack py="10px">
+              <HStack py="10px" w="100%" justifyContent="space-between">
+                <Text fontSize="14px" opacity="0.5">Creation fee :  {typeof CREAION_COST === 'bigint' ? formatEther(CREAION_COST) : '0'} APE</Text>
+                <HStack>
+
                 {" "}
                 {!prizeType ? (
                   <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onApproveNFT}
-                    isLoading={isPending || isConfirming}
+                  colorScheme="blue"
+                  mr={3}
+                  onClick={onApproveNFT}
+                  isLoading={isPending || isConfirming}
                   >
                     Approve
                   </Button>
@@ -604,9 +607,10 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                   mr={3}
                   onClick={onCreateMatch}
                   isLoading={isPending || isConfirming}
-                >
+                  >
                   Create Match
                 </Button>
+                  </HStack>
               </HStack>
             ) : null}
           </ModalFooter>
