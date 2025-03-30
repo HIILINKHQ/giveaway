@@ -127,7 +127,7 @@ export const PickWinner = ({
   );
 };
 
-const CreateMatch = ({refetch} : {refetch ?: any}) => {
+const CreateMatch = ({ refetch }: { refetch?: any }) => {
   const { address } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [nftDetails, setNFTDetails] = useState({
@@ -140,26 +140,30 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
   const [nativeAmount, setNativeAmount] = useState<number>(0);
   const [entryNFT, setEntryNFT] = useState<string>("");
   const [endDate, setEndDate] = useState<string | null>(null);
+  const [taskUrl, setTaskUrl] = useState<string>("");
+  const [taskType, setTaskType] = useState<string>("follow");
 
   const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
 
   const toast = useToast();
 
-  const { data : CREAION_COST } =
-  useReadContract({
-   chainId : apeChain.id,
-   address : contract_addr as `0x${string}`,
-   functionName : "CREATION_COST",
-   abi
+  const { data: CREAION_COST } = useReadContract({
+    chainId: apeChain.id,
+    address: contract_addr as `0x${string}`,
+    functionName: "CREATION_COST",
+    abi,
   });
 
-  console.log("CREAION_COST",CREAION_COST)
+  console.log("CREAION_COST", CREAION_COST);
   const { writeContractAsync, isPending, data: hash } = useWriteContract();
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
+  const {
+    isLoading: isConfirming,
+    isSuccess: isConfirmed,
+    data: receipt,
+  } = useWaitForTransactionReceipt({
+    hash,
+  });
 
   const _setNFTDetails = (data: { address: string; tokenId: string }) => {
     setNFTDetails(data);
@@ -178,7 +182,6 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
         functionName: "approve",
         args: [contract_addr as `0x${string}`, BigInt(nftDetails?.tokenId)],
       });
-
     } catch (err) {
       console.log("ERR on approval:", err);
       toast({ title: (err as BaseError).shortMessage, status: "error" });
@@ -214,7 +217,9 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
       const nftId = BigInt(nftDetails.tokenId ?? 0);
 
       const NFTaddress = !prizeType ? nftDetails.address : zeroAddress;
-      const amountOrId = !prizeType ? nftId : parseEther(nativeAmount.toString());
+      const amountOrId = !prizeType
+        ? nftId
+        : parseEther(nativeAmount.toString());
 
       const args = [
         prizeType ? 1 : 0,
@@ -224,10 +229,11 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
         _entryNFT,
       ];
 
-      const value = parseEther(nativeAmount.toString()) + BigInt(CREAION_COST as bigint);
+      const value =
+        parseEther(nativeAmount.toString()) + BigInt(CREAION_COST as bigint);
 
-      console.log(value)
-      console.log(args)
+      console.log(value);
+      console.log(args);
       const res = await writeContractAsync({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
@@ -236,7 +242,7 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
         abi,
         functionName: "createMatch",
         args,
-        value : !prizeType ? CREAION_COST as bigint : BigInt(value), // fix the current creation cost
+        value: !prizeType ? (CREAION_COST as bigint) : BigInt(value), // fix the current creation cost
       });
 
       // console.log("res", res);
@@ -248,10 +254,38 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
     }
   };
 
+  const writeTask = async (matchId: string) => {
+    // writing task to the database.
+
+    if (taskUrl?.length > 0) {
+      const response = await fetch("/api/task", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          matchId,
+          taskUrl,
+          taskType,
+          creator: address,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+    }
+
+    toast({ title: "Transaction confirmed.", status: "success" });
+    refetch?.();
+
+    return true;
+  };
+
   useEffect(() => {
     if (isConfirmed) {
-      toast({ title: "Transaction confirmed.", status: "success" });
-      refetch?.()
+      console.log("receipt.logs[0].topics[1]", receipt.logs);
+      const matchId = receipt.logs[0].topics[1];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      writeTask(matchId);
     }
   }, [isConfirmed, isConfirming]);
 
@@ -281,7 +315,13 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
                 spacing="32px"
                 flexDir={["column", null, "row", null]}
               >
-                <VStack  w="100%" flex={1}  pos={["relative","relative","sticky","sticky"]} top="0" spacing="20px">
+                <VStack
+                  w="100%"
+                  flex={1}
+                  pos={["relative", "relative", "sticky", "sticky"]}
+                  top="0"
+                  spacing="20px"
+                >
                   <VStack spacing={4} w="100%">
                     <VStack spacing="0" alignItems="flex-start" w="100%">
                       <Text
@@ -429,26 +469,40 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
                         Select only one task on X
                       </Text>
                     </VStack>
-                 <HStack w="100%">
-                 <Input
-                      flex={2}
-                      placeholder="Copy task URL"
-                    />
-                    <Select flex={1}>
-                      <option style={{color: "black"}}> Like</option>
-                      <option style={{color: "black"}}>Follow</option>
-                      <option style={{color: "black"}}>Retweet</option>
-                      <option style={{color: "black"}}>Comment</option>
-                    </Select>
-                 </HStack>
-                  
+                    <HStack w="100%">
+                      <Input
+                        flex={2}
+                        placeholder="Copy task URL"
+                        onChange={(e) => setTaskUrl(e.target.value)}
+                        value={taskUrl}
+                      />
+                      <Select
+                        flex={1}
+                        onChange={(e) => setTaskType(e.target.value)}
+                        value={taskType}
+                      >
+                        <option style={{ color: "black" }} value="like">
+                          {" "}
+                          Like
+                        </option>
+                        <option style={{ color: "black" }} value="follow">
+                          Follow
+                        </option>
+                        <option style={{ color: "black" }} value="retweet">
+                          Retweet
+                        </option>
+                        <option style={{ color: "black" }} value="comment">
+                          Comment
+                        </option>
+                      </Select>
+                    </HStack>
                   </VStack>
                 </VStack>
                 <Box flex={1.5} w="100%">
                   <VStack
                     spacing={4}
                     w="100%"
-                    pos={["relative","relative","sticky","sticky"]}
+                    pos={["relative", "relative", "sticky", "sticky"]}
                     top="-10px"
                     bg="black"
                     zIndex={2}
@@ -531,18 +585,20 @@ const CreateMatch = ({refetch} : {refetch ?: any}) => {
             )}
           </ModalBody>
 
-          <ModalFooter >
+          <ModalFooter>
             {address ? (
               <HStack py="10px">
                 {" "}
-              {!prizeType ?  <Button
-                  colorScheme="blue"
-                  mr={3}
-                  onClick={onApproveNFT}
-                  isLoading={isPending || isConfirming}
-                >
-                  Approve
-                </Button> : null}
+                {!prizeType ? (
+                  <Button
+                    colorScheme="blue"
+                    mr={3}
+                    onClick={onApproveNFT}
+                    isLoading={isPending || isConfirming}
+                  >
+                    Approve
+                  </Button>
+                ) : null}
                 <Button
                   colorScheme="blue"
                   mr={3}

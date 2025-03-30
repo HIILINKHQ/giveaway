@@ -71,7 +71,6 @@ const NFTGallery = ({
     }
   };
 
-  console.log("tokens", tokens)
 
   useEffect(() => {
     if (_Address) {

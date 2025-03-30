@@ -51,25 +51,11 @@ import { formatAddress } from "@/utils/helpers/formatAddress";
 import WalletConnector from "@/utils/connectKit.custom";
 import Link from "next/link";
 
-type EntryType =
-  | {
-      apeCost: bigint;
-      baseEntries: bigint;
-      bonusEntries: bigint;
-      exists: boolean;
-    }[]
-  | undefined;
-
-const getEntry = (id: number, entries: EntryType) => {
-  return (
-    entries?.[id] ?? {
-      baseEntries: 0n,
-      bonusEntries: 0n,
-      apeCost: 0n,
-      exists: true,
-    }
-  );
-};
+type TaskType = {
+  matchId: string;
+  taskType: string;
+  taskUrl: string;
+} | null;
 
 const Join = ({
   matchId,
@@ -86,6 +72,7 @@ const Join = ({
 }) => {
   const [entryId, setEntryId] = useState(1);
   const [tmpClicked, setTmpClicked] = useState(false);
+  const [taskDetails, setTaskDetails] = useState<TaskType>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
@@ -150,6 +137,26 @@ const Join = ({
       toast({ title: (err as BaseError).shortMessage, status: "error" });
     }
   };
+
+  useEffect(() => {
+    const getTaskDetails = async (matchId: string) => {
+      const response = await fetch(`/api/task?matchId=${matchId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Task details:", data); // Task details from the response
+        setTaskDetails(data);
+      } else {
+        console.log("Error:", data.error || data.message);
+      }
+    };
+
+    getTaskDetails(matchId);
+  }, [matchId]);
 
   useEffect(() => {
     if (isConfirmed) {
@@ -280,7 +287,23 @@ const Join = ({
                 </Button>
               ) : (
                 <VStack w="100%">
-                  <Text
+                 
+                  {taskDetails?.taskUrl ? (
+                    <Text
+                    py="4px"
+                    px="8px"
+                    borderRadius="6px"
+                    fontSize="14px"
+                    w="100%"
+                      color="white"
+                      border="1px solid rgba(255,255,255,.1)"
+                      bg="linear-gradient(50deg,rgb(15, 15, 15),rgb(32, 32, 32))"
+                    isTruncated
+                    >
+                     <b> {taskDetails.taskType}</b> : {taskDetails?.taskUrl}
+                    </Text>
+                  ) : null}
+                   <Text
                     fontSize="13px"
                     w="100%"
                     textAlign="center"
@@ -289,9 +312,8 @@ const Join = ({
                   >
                     After completing the task, you will be available to join.
                   </Text>
-
                   <Link
-                    href="https://x.com/hiilink"
+                    href={taskDetails?.taskUrl ?? "https://x.com/hiilink"}
                     target="_blank"
                     style={{ width: "100%" }}
                   >
@@ -305,7 +327,7 @@ const Join = ({
                       colorScheme="blue"
                       w="100%"
                     >
-                      Do task
+                      {taskDetails?.taskType ?? "Follow Hiilink"}
                     </Button>
                   </Link>
                 </VStack>

@@ -19,7 +19,7 @@ const PastMatches = () => {
             abi,
             functionName : "getMatchHistory",
             chainId : apeChain.id,
-            args : [0,10]
+            args : [0,100]
         })
 
 

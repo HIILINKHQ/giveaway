@@ -19,7 +19,7 @@ const OnGoingMatches = () => {
     abi,
     functionName: "getOngoingMatches",
     chainId: apeChain.id,
-    args: [0, 10],
+    args: [0, 100],
   });
 
   const { data: readyMatches, refetch: refetchReady } = useReadContract({
@@ -29,7 +29,7 @@ const OnGoingMatches = () => {
     abi,
     functionName: "getReadyMatches",
     chainId: apeChain.id,
-    args: [0, 10],
+    args: [0, 100],
   });
 
   console.log("getOngoingMatches", data, readyMatches);
