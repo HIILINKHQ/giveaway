@@ -73,6 +73,7 @@ const Join = ({
   const [entryId, setEntryId] = useState(1);
   const [tmpClicked, setTmpClicked] = useState(false);
   const [taskDetails, setTaskDetails] = useState<TaskType>(null);
+  const [collectionName, setCollectionName] = useState<string | null>(null)
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
@@ -155,7 +156,19 @@ const Join = ({
       }
     };
 
+    async function getCollectionName(contractAddress: string) {
+      const response = await fetch(`/api/collection?contract=${contractAddress}`);
+      const data = await response.json();
+      if (data.error) {
+        console.error("Error:", data.error);
+      } else {
+        console.log("Collection Name:", data.name);
+        setCollectionName(data.name)
+      }
+    }
+
     getTaskDetails(matchId);
+    getCollectionName(entryNFTAddress)
   }, [matchId]);
 
   useEffect(() => {
@@ -215,7 +228,8 @@ const Join = ({
                   </Box>
                   <Text fontSize="14px">
                     The giveaway is created for &apos;
-                    {formatAddress(entryNFTAddress)}&apos; addressed NFT
+                    <Link target="_blank" href={`https://magiceden.io/collections/apechain/${entryNFTAddress}`} style={{textDecoration : "underline"}}>{collectionName ?? formatAddress(entryNFTAddress)}</Link>
+                    &apos; addressed NFT
                     collection holders can join.
                   </Text>{" "}
                 </HStack>
