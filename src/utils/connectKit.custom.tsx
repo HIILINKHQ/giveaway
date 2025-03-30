@@ -6,7 +6,7 @@ import { orbitron } from "@/fonts";
 const WalletConnector = () => {
   return (
     <ConnectKitButton.Custom>
-      {({ isConnected, isConnecting, show, address, ensName }) => {
+      {({ isConnected, isConnecting, show, address, ensName, }) => {
         return (
           <Button
             onClick={show}

@@ -7,21 +7,8 @@ import Hamburger from "./sideBar";
 import { useEffect, useState } from "react";
 import { apeChain } from "viem/chains";
 import WalletConnector from "@/utils/connectKit.custom";
+import { AccountDetails } from "./accountDetails";
 
-const Paths = [
-  {
-    label: "Competitions",
-    path: "/competitions",
-  },
-  {
-    label: "How",
-    path: "/how",
-  },
-  {
-    label: "Other",
-    path: "/other",
-  },
-];
 const Header = () => {
   const { chain, address } = useAccount();
   const { switchChainAsync } = useSwitchChain();
@@ -92,21 +79,16 @@ const Header = () => {
          
         </HStack>
         
-        <HStack   spacing="24px">
+        <HStack   spacing="24px" alignItems="center">
         <Link href="/history">
           <Text fontWeight={400} fontSize="16px" className={`${orbitron.className} header_gradient`}>History</Text>
           </Link>
-          <Box display={["none", null, "block", null]}>
-            <WalletConnector />
-          </Box>
+          <HStack display={["none", null, "flex", null]} >
+           {address ? <AccountDetails /> : <WalletConnector />}
+          </HStack>
         </HStack>
       </HStack>
-      {/* {address?.length ? chain?.id !== apeChain.id ?  <Center pos="fixed" zIndex={10} h="100vh" w="100vw">
-
-      <VStack >
-      <Text>Use Apechain</Text>
-      </VStack>
-      </Center> : null : null } */}
+   
     </HStack>
   );
 };

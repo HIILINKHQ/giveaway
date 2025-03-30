@@ -20,6 +20,8 @@ import { HiOutlineClock } from "react-icons/hi2";
 import { orbitron } from "@/fonts";
 import MatchEntries from "../join/MatchEntries";
 import ApecoinCard from "./ApecoinCard";
+import { useEffect, useState } from "react";
+import { accountDetailsType } from "@/layouts/accountDetails";
 
 type CurrentCompProps = {
   data: {
@@ -43,10 +45,29 @@ type CurrentCompProps = {
 };
 
 const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
+    const [accountDetails, setAccountDetails] =
+      useState<accountDetailsType>(null);
   const { prizeAddress, prizeId, totalEntries, endDate, id , entryNFTAddress} = data;
 
   console.log("data", data);
   const toast = useToast();
+
+  useEffect(() => {
+      async function fetchProfile(wallet: `0x${string}`) {
+        const response = await fetch(`/api/profile?wallet=${wallet}`);
+        const data = await response.json();
+        if (data.error) {
+          console.error("Error fetching profile:", data.error);
+        } else {
+          console.log("User Profile:", data);
+          setAccountDetails(data);
+        }
+      }
+  
+      if (data?.creator) {
+        fetchProfile(data?.creator as `0x${string}`);
+      }
+    }, [data]);
 
   return (
     <Join matchId={id ?? 0n} refetch={refetch} entryNFTAddress={entryNFTAddress} >
@@ -161,12 +182,33 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
           <Text fontSize="13px" fontWeight={500} opacity={0.4}>
             Created by
           </Text>
+          {accountDetails ? (
+          <HStack alignItems="center" lineHeight={1}>
+            <Text fontSize="13px" className="header_gradient" fontWeight={500}>
+              {" "}
+              {accountDetails?.username ?? formatAddress(data?.creator)}
+            </Text>
+            <Box
+              boxSize="20px"
+              bg={
+                accountDetails?.avatar_url?.length
+                  ? `url(${accountDetails?.avatar_url})`
+                  : "#eee"
+              }
+              bgSize="cover"
+              bgPos="center"
+              borderRadius="50%"
+            />
+          </HStack>
+        ) : (
           <HStack>
+            {" "}
             <Text fontSize="13px" fontWeight={500}>
               {formatAddress(data?.creator)}
-            </Text>
-            <Box bg="gray" boxSize="20px" borderRadius="50%" />
+            </Text>{" "}
+            <Box bg="gray" boxSize="20px" borderRadius="50%" />{" "}
           </HStack>
+        )}
         </HStack>
 
         <Box className="grainy-bg" opacity={0.2} zIndex={-1} />
