@@ -37,45 +37,50 @@ type CurrentCompProps = {
     prizeType: number;
     prizeId: bigint;
     creator: string;
-    entryNFTAddress : string
+    entryNFTAddress: string;
   };
-  
+
   /* eslint-disable @typescript-eslint/no-explicit-any */
   refetch: any;
 };
 
 const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
-    const [accountDetails, setAccountDetails] =
-      useState<accountDetailsType>(null);
-  const { prizeAddress, prizeId, totalEntries, endDate, id , entryNFTAddress} = data;
+  const [accountDetails, setAccountDetails] =
+    useState<accountDetailsType>(null);
+  const { prizeAddress, prizeId, totalEntries, endDate, id, entryNFTAddress } =
+    data;
 
   console.log("data", data);
   const toast = useToast();
 
   useEffect(() => {
-      async function fetchProfile(wallet: `0x${string}`) {
-        const response = await fetch(`/api/profile?wallet=${wallet}`);
-        const data = await response.json();
-        if (data.error) {
-          console.error("Error fetching profile:", data.error);
-        } else {
-          console.log("User Profile:", data);
-          setAccountDetails(data);
-        }
+    async function fetchProfile(wallet: `0x${string}`) {
+      const response = await fetch(`/api/profile?wallet=${wallet}`);
+      const data = await response.json();
+      if (data.error) {
+        console.error("Error fetching profile:", data.error);
+      } else {
+        console.log("User Profile:", data);
+        setAccountDetails(data);
       }
-  
-      if (data?.creator) {
-        fetchProfile(data?.creator as `0x${string}`);
-      }
-    }, [data]);
+    }
+
+    if (data?.creator) {
+      fetchProfile(data?.creator as `0x${string}`);
+    }
+  }, [data]);
 
   return (
-    <Join matchId={id ?? 0n} refetch={refetch} entryNFTAddress={entryNFTAddress} >
+    <Join
+      matchId={id ?? 0n}
+      refetch={refetch}
+      entryNFTAddress={entryNFTAddress}
+    >
       <VStack
         w="100%"
         maxW={MAXW}
         alignItems="stretch"
-        bg="linear-gradient(60deg, rgb(15, 15, 15),rgba(22, 22, 22, 0.95))"
+        bg="black"
         border="1px solid rgba(255,255,255,.1)"
         px={["10px", "16px", "16px", null]}
         py={["16px", "16px", "16px", null]}
@@ -87,7 +92,8 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
         cursor="pointer"
         className="match_card"
       >
-        <Box pos="relative">
+        <Box pos="absolute" minW="100%" minH="100%" top={0} left={0} />
+        <Box pos="relative" zIndex={2}>
           <Box pos="relative" overflow="hidden" borderRadius="12px">
             {data.prizeType === 1 ? (
               <ApecoinCard prizeId={data.prizeId} />
@@ -156,7 +162,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
           key={totalEntries}
         />
 
-        <Box w="100%" pos="relative" p="1px">
+        <Box w="100%" pos="relative" p="1px" zIndex={2}>
           <Button
             w="100%"
             borderRadius="6px"
@@ -178,37 +184,42 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
           px="6px"
           color="white"
           pt="8px"
+          zIndex={2}
         >
           <Text fontSize="13px" fontWeight={500} opacity={0.4}>
             Created by
           </Text>
           {accountDetails ? (
-          <HStack alignItems="center" lineHeight={1}>
-            <Text fontSize="13px" className="header_gradient" fontWeight={500}>
+            <HStack alignItems="center" lineHeight={1}>
+              <Text
+                fontSize="13px"
+                className="header_gradient"
+                fontWeight={500}
+              >
+                {" "}
+                {accountDetails?.username ?? formatAddress(data?.creator)}
+              </Text>
+              <Box
+                boxSize="20px"
+                bg={
+                  accountDetails?.avatar_url?.length
+                    ? `url(${accountDetails?.avatar_url})`
+                    : "#eee"
+                }
+                bgSize="cover"
+                bgPos="center"
+                borderRadius="50%"
+              />
+            </HStack>
+          ) : (
+            <HStack>
               {" "}
-              {accountDetails?.username ?? formatAddress(data?.creator)}
-            </Text>
-            <Box
-              boxSize="20px"
-              bg={
-                accountDetails?.avatar_url?.length
-                  ? `url(${accountDetails?.avatar_url})`
-                  : "#eee"
-              }
-              bgSize="cover"
-              bgPos="center"
-              borderRadius="50%"
-            />
-          </HStack>
-        ) : (
-          <HStack>
-            {" "}
-            <Text fontSize="13px" fontWeight={500}>
-              {formatAddress(data?.creator)}
-            </Text>{" "}
-            <Box bg="gray" boxSize="20px" borderRadius="50%" />{" "}
-          </HStack>
-        )}
+              <Text fontSize="13px" fontWeight={500}>
+                {formatAddress(data?.creator)}
+              </Text>{" "}
+              <Box bg="gray" boxSize="20px" borderRadius="50%" />{" "}
+            </HStack>
+          )}
         </HStack>
 
         <Box className="grainy-bg" opacity={0.2} zIndex={-1} />

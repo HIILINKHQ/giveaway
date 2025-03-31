@@ -25,7 +25,7 @@ const config = createConfig(
 
     // Optional App Info
     appDescription: process.env.NEXT_PUBLIC_PROJECT_DESCRIPTION ?? "Hiilink",
-    appUrl: "https://frostbyte.art", // your app's url
+    appUrl: "https://hii.link", // your app's url
     appIcon: "https://www.frostbyte.art/hiilink_logo.avif", // your app's icon, no bigger than 1024x1024px (max. 1MB)
   })
 );

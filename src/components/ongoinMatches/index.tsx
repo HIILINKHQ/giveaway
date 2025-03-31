@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const OnGoingMatches = () => {
   const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
-  const [isAll, setIsAll] = useState(false);
+  const [isAll, setIsAll] = useState(true);
 
   const { address } = useAccount();
 
@@ -38,26 +38,26 @@ const OnGoingMatches = () => {
   });
 
   return (
-    <VStack w="100%" spacing="32px" pt="24px">
-      <VStack>
+    <VStack w="100%" spacing="32px">
+      <VStack gap="0" pb="100px">
+        <Text color="white" fontWeight={200}>
+          Create by everyone, Attend everyone.
+        </Text>
         <Text
           color="white"
           fontWeight={700}
-          fontSize="46px"
+          fontSize="70px"
           className={orbitron.className}
         >
-          GIVEAWAYS
-        </Text>
-        <Text color="white" fontWeight={200}>
-          Create by everyone , attend everyone.
+          GIVEAWAY
         </Text>
         <CreateMatch refetch={refetch} />
       </VStack>
-      {address ? (
+      {/* {address ? (
         <HStack w="100%" justifyContent="flex-end">
           <MyFilter setIsAll={setIsAll} isAll={isAll} />
         </HStack>
-      ) : null}
+      ) : null} */}
       <SimpleGrid w="100%" columns={[1, 2, 3, 4]} spacing="10px">
         {/* eslint-disable @typescript-eslint/no-explicit-any */}
         {(data as any)

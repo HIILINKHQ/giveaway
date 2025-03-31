@@ -55,12 +55,10 @@ export default function Home() {
       px={["10px", null, 0, null]}
     >
       {/* <Carousel /> */}
-   
+
       <OnGoingMatches />
- 
-      
+
       {/* <PastMatches /> */}
-    
     </VStack>
   );
 }

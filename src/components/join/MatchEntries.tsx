@@ -53,7 +53,7 @@ const MatchEntries = ({
   // const participations = data as ParticipationsType | undefined;
 
   return (
-    <HStack px="10px" className={orbitron.className}>
+    <HStack px="10px" className={orbitron.className} zIndex={2}>
       <HStack
         spacing={0}
         color="white"
@@ -63,7 +63,7 @@ const MatchEntries = ({
         pr="10px"
       >
         <Text fontSize="12px" fontWeight={500} opacity={0.5}>
-         Joined
+          Joined
         </Text>
         <Text
           // onClick={onOpen}

@@ -46,11 +46,10 @@ const Header = () => {
       zIndex={4}
       w="100%"
       justifyContent="center"
-      py={["20px"]}
+      py={["40px"]}
       px={"20px"}
-   
+
       // bg={isScrolled ? "rgba(0,0,0,.2)" : "transparent"}
-    
     >
       <HStack
         w="100%"
@@ -62,33 +61,39 @@ const Header = () => {
         py="14px"
         px="19px"
         borderRadius="10px"
-        border={isScrolled ? "1px solid rgb(112, 112, 112)" : "1px solid rgb(23, 25, 27)"}
+        border={
+          isScrolled
+            ? "1px solid rgb(112, 112, 112)"
+            : "1px solid rgb(23, 25, 27)"
+        }
         transition="ease-out 0.2s"
-       
       >
         {/* <HStack spacing="48px">
         <Hamburger />
         </HStack> */}
-       <HStack>
+        <HStack>
           <Link href="/">
             <HStack pos="relative" alignItems="flex-end">
-             <Image src="/hiilink_header.avif" h="36px"/>
-            
+              <Image src="/hiilink_header.avif" h="36px" />
             </HStack>
           </Link>
-         
         </HStack>
-        
-        <HStack   spacing="24px" alignItems="center">
-        <Link href="/history">
-          <Text fontWeight={400} fontSize="16px" className={`${orbitron.className} header_gradient`}>History</Text>
+
+        <HStack spacing="24px" alignItems="center">
+          <Link href="/history">
+            <Text
+              fontWeight={400}
+              fontSize="16px"
+              className={`${orbitron.className} header_gradient`}
+            >
+              History
+            </Text>
           </Link>
-          <HStack display={["none", null, "flex", null]} >
-           {address ? <AccountDetails /> : <WalletConnector />}
+          <HStack display={["none", null, "flex", null]}>
+            {address ? <AccountDetails /> : <WalletConnector />}
           </HStack>
         </HStack>
       </HStack>
-   
     </HStack>
   );
 };

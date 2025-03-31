@@ -291,7 +291,17 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
 
   return (
     <VStack justifyContent="flex-start" alignItems="flex-start">
-      <Button onClick={onOpen} px="24px">
+      <Button
+        onClick={onOpen}
+        px="34px"
+        py="7px"
+        fontWeight={700}
+        bg="linear-gradient(90deg, rgba(158,158,158,1) 0%, rgba(36,36,36,1) 100%)"
+        color="white"
+        border="0.5px solid white"
+        borderRadius="xl"
+        h="100%"
+      >
         Create Yours
       </Button>
 
@@ -588,29 +598,34 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
           <ModalFooter>
             {address ? (
               <HStack py="10px" w="100%" justifyContent="space-between">
-                <Text fontSize="14px" opacity="0.5">Creation fee :  {typeof CREAION_COST === 'bigint' ? formatEther(CREAION_COST) : '0'} APE</Text>
+                <Text fontSize="14px" opacity="0.5">
+                  Creation fee :{" "}
+                  {typeof CREAION_COST === "bigint"
+                    ? formatEther(CREAION_COST)
+                    : "0"}{" "}
+                  APE
+                </Text>
                 <HStack>
-
-                {" "}
-                {!prizeType ? (
+                  {" "}
+                  {!prizeType ? (
+                    <Button
+                      colorScheme="blue"
+                      mr={3}
+                      onClick={onApproveNFT}
+                      isLoading={isPending || isConfirming}
+                    >
+                      Approve
+                    </Button>
+                  ) : null}
                   <Button
-                  colorScheme="blue"
-                  mr={3}
-                  onClick={onApproveNFT}
-                  isLoading={isPending || isConfirming}
+                    colorScheme="blue"
+                    mr={3}
+                    onClick={onCreateMatch}
+                    isLoading={isPending || isConfirming}
                   >
-                    Approve
+                    Create Match
                   </Button>
-                ) : null}
-                <Button
-                  colorScheme="blue"
-                  mr={3}
-                  onClick={onCreateMatch}
-                  isLoading={isPending || isConfirming}
-                  >
-                  Create Match
-                </Button>
-                  </HStack>
+                </HStack>
               </HStack>
             ) : null}
           </ModalFooter>
