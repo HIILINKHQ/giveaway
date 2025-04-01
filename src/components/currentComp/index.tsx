@@ -12,12 +12,9 @@ import {
 } from "@chakra-ui/react";
 import NftCard from "../nftCard";
 import { MAXW } from "@/utils/globals";
-import Timer from "./timer";
 import CurrentCompLoader from "./currentCompLoader";
 import Join from "../join";
 import { formatAddress } from "@/utils/helpers/formatAddress";
-import { HiOutlineClock } from "react-icons/hi2";
-import { orbitron } from "@/fonts";
 import MatchEntries from "../join/MatchEntries";
 import ApecoinCard from "./ApecoinCard";
 import { useEffect, useState } from "react";
@@ -82,8 +79,8 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
         alignItems="stretch"
         bg="black"
         border="1px solid rgba(255,255,255,.1)"
-        px={["10px", "16px", "16px", null]}
-        py={["16px", "16px", "16px", null]}
+        px={["10px", "10px", "10px", null]}
+        py={["10px", "10px", "10px", null]}
         borderRadius={["16px", "16px", "16px", null]}
         justifyContent="flex-start"
         flex={1}
@@ -92,7 +89,15 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
         cursor="pointer"
         className="match_card"
       >
-        <Box pos="absolute" minW="100%" minH="100%" top={0} left={0} />
+        <Box
+          pos="absolute"
+          minW="100%"
+          minH="100%"
+          top={0}
+          left={0}
+          bg="linear-gradient(337deg, rgba(0,0,0,1) 47%, rgba(255,255,255,1) 100%)"
+          filter="blur(5px)"
+        />
         <Box pos="relative" zIndex={2}>
           <Box pos="relative" overflow="hidden" borderRadius="12px">
             {data.prizeType === 1 ? (
@@ -129,7 +134,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
             bg="radial-gradient(53.293236277382746% 100% at 50.000000000000014% 3.5083047578154947e-12%, rgba(255, 255, 255, .1) 17.68043041229248%, rgba(0, 0, 0, 0) 71.67174816131592%);"
           />
 
-          <Box
+          {/* <Box
             pos="absolute"
             display="flex"
             aspectRatio={1}
@@ -153,13 +158,14 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
               <HiOutlineClock strokeWidth={2} size={18} color="#EFB036" />
               <Timer targetTimestamp={Number(endDate ?? 0n)} />
             </HStack>
-          </Box>
+          </Box> */}
         </Box>
 
         <MatchEntries
           totalEntries={totalEntries}
           matchId={data.id}
           key={totalEntries}
+          endDate={endDate}
         />
 
         <Box w="100%" pos="relative" p="1px" zIndex={2}>
@@ -167,10 +173,13 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
             w="100%"
             borderRadius="6px"
             zIndex={1}
-            bg="#181818"
             color="white"
-            _hover={{ bg: "black" }}
+            _hover={{
+              bg: "linear-gradient(-90deg, rgba(34,34,34,1) 22%, rgba(78,78,78,1) 100%)",
+            }}
             fontSize="14px"
+            bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
+            fontWeight={700}
           >
             JOIN NOW
           </Button>
@@ -181,18 +190,17 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
         <HStack
           w="100%"
           justifyContent="space-between"
-          px="6px"
           color="white"
-          pt="8px"
+          pt="20px"
           zIndex={2}
         >
-          <Text fontSize="13px" fontWeight={500} opacity={0.4}>
+          <Text fontSize="10px" fontWeight={500} opacity={0.4}>
             Created by
           </Text>
           {accountDetails ? (
             <HStack alignItems="center" lineHeight={1}>
               <Text
-                fontSize="13px"
+                fontSize="10px"
                 className="header_gradient"
                 fontWeight={500}
               >
@@ -214,7 +222,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
           ) : (
             <HStack>
               {" "}
-              <Text fontSize="13px" fontWeight={500}>
+              <Text fontSize="10px" fontWeight={500}>
                 {formatAddress(data?.creator)}
               </Text>{" "}
               <Box bg="gray" boxSize="20px" borderRadius="50%" />{" "}

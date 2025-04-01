@@ -70,8 +70,8 @@ const ReadyMatch = ({ data }: CurrentCompProps) => {
       alignItems="stretch"
       bg="linear-gradient(60deg, rgb(15, 15, 15),rgba(22, 22, 22, 0.95))"
       border="1px solid rgba(255,255,255,.1)"
-      px={["10px", "16px", "16px", null]}
-      py={["16px", "16px", "16px", null]}
+      px={["10px", "10px", "10px", null]}
+      py={["10px", "10px", "10px", null]}
       borderRadius={["16px", "16px", "16px", null]}
       justifyContent="flex-start"
       flex={1}
@@ -80,7 +80,16 @@ const ReadyMatch = ({ data }: CurrentCompProps) => {
       cursor="pointer"
       className="match_card"
     >
-      <Box pos="relative">
+      <Box
+        pos="absolute"
+        minW="100%"
+        minH="100%"
+        top={0}
+        left={0}
+        bg="linear-gradient(337deg, rgba(0,0,0,1) 47%, rgba(255,255,255,1) 100%)"
+        filter="blur(5px)"
+      />
+      <Box pos="relative" zIndex={2}>
         <Box pos="relative" overflow="hidden" borderRadius="12px">
           {data.prizeType === 1 ? (
             <ApecoinCard prizeId={data.prizeId} />
@@ -119,7 +128,11 @@ const ReadyMatch = ({ data }: CurrentCompProps) => {
         </Box>
       </Box>
       {/* <Box w="90%" borderTop="1px dashed rgba(255,255,255,.1)" mx="auto" /> */}
-      <MatchEntries totalEntries={totalEntries} matchId={data.id} />
+      <MatchEntries
+        totalEntries={totalEntries}
+        matchId={data.id}
+        endDate={endDate}
+      />
 
       <HStack
         h="40px"
@@ -136,17 +149,16 @@ const ReadyMatch = ({ data }: CurrentCompProps) => {
       <HStack
         w="100%"
         justifyContent="space-between"
-        px="6px"
         color="white"
-        pt="8px"
+        pt="20px"
+        zIndex={2}
       >
-        <Text fontSize="13px" fontWeight={500} opacity={0.4}>
+        <Text fontSize="10px" fontWeight={500} opacity={0.4}>
           Created by
         </Text>
-
         {accountDetails ? (
           <HStack alignItems="center" lineHeight={1}>
-            <Text fontSize="13px" className="header_gradient" fontWeight={500}>
+            <Text fontSize="10px" className="header_gradient" fontWeight={500}>
               {" "}
               {accountDetails?.username ?? formatAddress(data?.creator)}
             </Text>
@@ -165,7 +177,7 @@ const ReadyMatch = ({ data }: CurrentCompProps) => {
         ) : (
           <HStack>
             {" "}
-            <Text fontSize="13px" fontWeight={500}>
+            <Text fontSize="10px" fontWeight={500}>
               {formatAddress(data?.creator)}
             </Text>{" "}
             <Box bg="gray" boxSize="20px" borderRadius="50%" />{" "}

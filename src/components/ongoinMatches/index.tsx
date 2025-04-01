@@ -10,6 +10,7 @@ import ReadyMatch from "../currentComp/readyMatch";
 import CreateMatch from "../my/AdminLayout/functions/matches";
 import MyFilter from "./myFilter";
 import { useState } from "react";
+import { MAXW } from "@/utils/globals";
 
 const OnGoingMatches = () => {
   const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
@@ -38,15 +39,15 @@ const OnGoingMatches = () => {
   });
 
   return (
-    <VStack w="100%" spacing="32px">
+    <VStack w="100%" maxW={MAXW} px="32px" spacing="32px">
       <VStack gap="0" pb="100px">
-        <Text color="white" fontWeight={200}>
+        <Text color="white" fontWeight={200} textAlign="center">
           Create by everyone, Attend everyone.
         </Text>
         <Text
           color="white"
           fontWeight={700}
-          fontSize="70px"
+          fontSize={["50px", null, "60px", null, "70px"]}
           className={orbitron.className}
         >
           GIVEAWAY

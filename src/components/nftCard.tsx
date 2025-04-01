@@ -14,33 +14,32 @@ import { LuExternalLink } from "react-icons/lu";
 import { useEffect, useState } from "react";
 
 type NftCardProps = {
-  contractAddress : string, 
-  tokenId : string
-}
+  contractAddress: string;
+  tokenId: string;
+};
 
 type tokenDataType = {
-  token : {
-    image : string,
-    tokenId : string,
-    collection :{
-      name : string
-    }
-  },
-
-}
+  token: {
+    image: string;
+    tokenId: string;
+    collection: {
+      name: string;
+    };
+  };
+};
 
 async function fetchTokens(contractAddress: string, tokenId: string) {
-  const baseUrl = 'https://api-apechain.reservoir.tools/tokens/v7';
+  const baseUrl = "https://api-apechain.reservoir.tools/tokens/v7";
   const params = new URLSearchParams({
     tokens: `${contractAddress}:${tokenId}`,
   });
 
   try {
     const response = await fetch(`${baseUrl}?${params.toString()}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Accept': '*/*',
-      }
+        Accept: "*/*",
+      },
     });
 
     if (!response.ok) {
@@ -49,74 +48,72 @@ async function fetchTokens(contractAddress: string, tokenId: string) {
 
     const data = await response.json();
 
-    return data
+    return data;
   } catch (error) {
-    console.error('Error fetching tokens:', error);
+    console.error("Error fetching tokens:", error);
   }
 }
 
 async function refreshTokenMetadata(contractAddress: string, tokenId: string) {
-  const REFRESH_BASE_URI = 'https://api-apechain.reservoir.tools';
+  const REFRESH_BASE_URI = "https://api-apechain.reservoir.tools";
   const tokenSet = `${contractAddress}:${tokenId}`;
 
   try {
     const response = await fetch(`${REFRESH_BASE_URI}/tokens/refresh/v2`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Accept': '*/*',
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR_API_KEY ?? ''
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_RESERVOIR_API_KEY ?? "",
       },
       body: JSON.stringify({
         liquidityOnly: false,
         overrideCoolDown: false,
-        tokens: [tokenSet]
-      })
+        tokens: [tokenSet],
+      }),
     });
 
-    if (!response.ok) throw new Error(`Error refreshing token! Status: ${response.status}`);
+    if (!response.ok)
+      throw new Error(`Error refreshing token! Status: ${response.status}`);
 
     return await response.json();
   } catch (error) {
-    console.error('Error refreshing token metadata:', error);
+    console.error("Error refreshing token metadata:", error);
     return null;
   }
 }
 
-const NftCard = ({contractAddress, tokenId} : NftCardProps) => {
+const NftCard = ({ contractAddress, tokenId }: NftCardProps) => {
+  const [tokenData, setTokenData] = useState<null | tokenDataType>(null);
 
-
-  const [tokenData, setTokenData] = useState<null | tokenDataType>(null)
- 
   async function getDetails(contractAddress: string, tokenId: string) {
     let tokenData = await fetchTokens(contractAddress, tokenId);
-  
-    console.log('Initial token data:', tokenData);
-  
+
+    console.log("Initial token data:", tokenData);
+
     const token = tokenData?.tokens?.[0]?.token;
-  
+
     if (!token || !token.image) {
-      console.log('Image is missing, refreshing metadata...');
+      console.log("Image is missing, refreshing metadata...");
       await refreshTokenMetadata(contractAddress, tokenId);
-  
+
       // Wait for a short delay before fetching again to allow metadata to update
       await new Promise((resolve) => setTimeout(resolve, 5000));
-  
+
       // Fetch updated token details
       tokenData = await fetchTokens(contractAddress, tokenId);
-      console.log('Updated token data:', tokenData);
+      console.log("Updated token data:", tokenData);
     }
 
-    console.log("tokenData",tokenData)
-  
+    console.log("tokenData", tokenData);
+
     setTokenData(tokenData.tokens[0]);
   }
 
-  useEffect(()=>{
-    getDetails(contractAddress,tokenId)
-  },[])
-  
-  
+  useEffect(() => {
+    getDetails(contractAddress, tokenId);
+  }, []);
+
   return (
     <Box p="1px" borderRadius="14px" pos="relative">
       <VStack
@@ -131,36 +128,29 @@ const NftCard = ({contractAddress, tokenId} : NftCardProps) => {
       >
         <AspectRatio w="100%" ratio={1} borderRadius="12px" overflow="hidden">
           <Box pos="relative">
-          <Image src={tokenData?.token.image} zIndex={1} w="100%"/>
-          <Skeleton pos="absolute" aspectRatio={1} w="100%" zIndex={0} />
+            <Image src={tokenData?.token.image} zIndex={1} w="100%" />
+            <Skeleton pos="absolute" aspectRatio={1} w="100%" zIndex={0} />
           </Box>
         </AspectRatio>
 
-        <VStack pt="12px" w="100%"  px="10px">
+        <VStack w="100%">
           <HStack justifyContent="space-between" w="100%">
-            <Text fontSize="18px" isTruncated>{tokenData?.token?.collection?.name}</Text>
-            <HStack>
-              <Text>#{tokenData?.token?.tokenId}</Text>
+            <Text fontSize="13px" isTruncated fontWeight={600}>
+              {tokenData?.token?.collection?.name}
+            </Text>
+            <HStack gap="10px">
+              <Text fontWeight={600} fontSize="13px">
+                #{tokenData?.token?.tokenId}
+              </Text>
               <Link
                 href={`https://magiceden.io/item-details/apechain/${contractAddress}/${tokenId}`}
                 target="_blank"
               >
-                <Button
-                  size="xs"
-                  variant="ghost"
-                  color="white"
-                  _hover={{
-                    bg: "white",
-                    color: "black",
-                  }}
-                >
-                  <LuExternalLink />
-                </Button>
+                <LuExternalLink size="10px" color="rgba(255,255,255, 0.5)" />
               </Link>
             </HStack>
           </HStack>
         </VStack>
-    
       </VStack>
       {/* <Box className="animated-border-box-glow" />
       <Box className="animated-border-box" /> */}

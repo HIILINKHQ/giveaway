@@ -19,6 +19,7 @@ import { useAccount, useReadContract } from "wagmi";
 import abi from "@/contract/abis/winpad.abi.json";
 import { apeChain } from "viem/chains";
 import { formatAddress } from "@/utils/helpers/formatAddress";
+import Timer from "../currentComp/timer";
 
 type ParticipationsType = {
   entries: bigint;
@@ -29,9 +30,11 @@ type ParticipationsType = {
 const MatchEntries = ({
   totalEntries,
   matchId,
+  endDate,
 }: {
   totalEntries: bigint;
   matchId: string;
+  endDate: bigint;
 }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   // const { address } = useAccount();
@@ -53,30 +56,36 @@ const MatchEntries = ({
   // const participations = data as ParticipationsType | undefined;
 
   return (
-    <HStack px="10px" className={orbitron.className} zIndex={2}>
+    <HStack className={orbitron.className} zIndex={2}>
       <HStack
         spacing={0}
         color="white"
         alignItems="center"
         w="100%"
         justifyContent="space-between"
-        pr="10px"
+        fontSize="10px"
       >
-        <Text fontSize="12px" fontWeight={500} opacity={0.5}>
-          Joined
-        </Text>
-        <Text
-          // onClick={onOpen}
-          cursor="pointer"
-          fontSize="20px"
-          className="fade-in"
-          key={Number(totalEntries ?? 0n)}
-        >
-          {" "}
-          {Number(totalEntries ?? 0n)
-            .toString()
-            .padStart(2, "0")}{" "}
-        </Text>
+        <HStack>
+          <Text opacity={0.5}>ENDS</Text>
+          <Timer targetTimestamp={Number(endDate ?? 0n)} />
+        </HStack>
+        <HStack>
+          <Text fontWeight={500} opacity={0.5}>
+            ENTRIES
+          </Text>
+          <Text
+            // onClick={onOpen}
+            cursor="pointer"
+            className="fade-in"
+            key={Number(totalEntries ?? 0n)}
+            fontWeight={600}
+          >
+            {" "}
+            {Number(totalEntries ?? 0n)
+              .toString()
+              .padStart(2, "0")}{" "}
+          </Text>
+        </HStack>
       </HStack>
       {/* <Modal
         isOpen={isOpen}

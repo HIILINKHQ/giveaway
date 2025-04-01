@@ -301,6 +301,9 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
         border="0.5px solid white"
         borderRadius="xl"
         h="100%"
+        _hover={{
+          bg: "linear-gradient(90deg, rgba(158,158,158,1) 20%, rgba(36,36,36,1) 100%)",
+        }}
       >
         Create Yours
       </Button>
@@ -313,10 +316,20 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
         scrollBehavior="inside"
       >
         <ModalOverlay />
-        <ModalContent bg="black" color="white">
-          <ModalHeader>Create New Giveaway</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
+        <ModalContent color="white" pos="relative" bg="black" overflow="hidden">
+          <Box
+            minW="100%"
+            minH="100%"
+            bg="linear-gradient(337deg, rgba(0,0,0,1) 77%, rgba(255,255,255,0.3) 100%)"
+            pos="absolute"
+            top="0"
+            left="0"
+            filter="blur(5px)"
+            zIndex={1}
+          />
+          <ModalHeader zIndex={2}>Create New Giveaway</ModalHeader>
+          <ModalCloseButton zIndex={2} />
+          <ModalBody zIndex={2}>
             {address ? (
               <HStack
                 w="100%"
@@ -348,6 +361,10 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                     <Input
                       type="datetime-local"
                       onChange={(e) => setEndDate(e.target.value)}
+                      borderColor="#4e4e4e"
+                      _focus={{
+                        border: "1px solid #4e4e4e",
+                      }}
                     />
                     <Text
                       fontSize="13px"
@@ -372,18 +389,23 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                       </Text>
                     </VStack>
                     <HStack
-                      border="1px solid rgba(255,255,255,.4)"
                       py="8px"
                       pos="relative"
                       w="100%"
+                      borderRadius="20px"
+                      gap="10px"
+                      fontWeight={600}
                     >
                       <Box
                         flex={1}
                         textAlign="center"
                         onClick={() => setGAtype(true)}
                         cursor="pointer"
-                        color={GAtype ? "black" : "white"}
+                        color={GAtype ? "black" : "#a1a1a1"}
                         zIndex={1}
+                        bg={GAtype ? "#a1a1a1" : "rgba(255,255,255, 0.1)"}
+                        borderRadius="10px"
+                        py="10px"
                       >
                         PUBLIC
                       </Box>
@@ -392,12 +414,15 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         textAlign="center"
                         onClick={() => setGAtype(false)}
                         cursor="pointer"
-                        color={GAtype ? "white" : "black"}
+                        color={GAtype ? "#a1a1a1" : "black"}
                         zIndex={1}
+                        bg={GAtype ? "rgba(255,255,255, 0.1)" : "#a1a1a1"}
+                        borderRadius="10px"
+                        py="10px"
                       >
                         PRIVATE
                       </Box>
-                      <Box
+                      {/* <Box
                         pos="absolute"
                         top="0"
                         h="100%"
@@ -405,17 +430,18 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         bg="#eee"
                         transform={`translateX(${GAtype ? "0%" : "100%"})`}
                         transition="ease-out 0.2s"
-                      />
+                        borderRadius="20px"
+                      /> */}
                     </HStack>
                     {GAtype ? (
                       <VStack
                         w="100%"
-                        bg="rgba(255,255,255,.1)"
-                        border="1px solid rgba(255,255,255,.1)"
+                        bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
                         spacing="0"
                         py="16px"
                         minH="157px"
                         justifyContent="center"
+                        borderRadius="10px"
                       >
                         <Text
                           fontSize="16px"
@@ -431,12 +457,12 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                     ) : (
                       <VStack
                         w="100%"
-                        bg="rgba(255,255,255,.1)"
-                        border="1px solid rgba(255,255,255,.1)"
+                        bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
                         spacing="0"
                         py="16px"
                         px="32px"
                         alignItems="flex-start"
+                        borderRadius="10px"
                       >
                         <Text
                           fontSize="16px"
@@ -453,6 +479,13 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                           placeholder="0x12345678"
                           onChange={(e) => setEntryNFT(e.target.value)}
                           value={entryNFT}
+                          bgColor="#222"
+                          bg="#222"
+                          border="1px solid #4e4e4e"
+                          _placeholder={{ color: "#4e4e4e", fontWeight: "600" }}
+                          _focus={{
+                            border: "1px solid #4e4e4e",
+                          }}
                         />
                         <Text
                           pt="4px"
@@ -485,11 +518,18 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         placeholder="Copy task URL"
                         onChange={(e) => setTaskUrl(e.target.value)}
                         value={taskUrl}
+                        bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
+                        border="none"
+                        _placeholder={{ color: "#858585", fontWeight: "600" }}
                       />
                       <Select
                         flex={1}
                         onChange={(e) => setTaskType(e.target.value)}
                         value={taskType}
+                        bg="#a1a1a1"
+                        border="none"
+                        fontWeight={600}
+                        color="black"
                       >
                         <option style={{ color: "black" }} value="like">
                           {" "}
@@ -508,7 +548,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                     </HStack>
                   </VStack>
                 </VStack>
-                <Box flex={1.5} w="100%">
+                <Box flex={1} w="100%">
                   <VStack
                     spacing={4}
                     w="100%"
@@ -530,19 +570,17 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         What asset you want to giveaway.
                       </Text>
                     </VStack>
-                    <HStack
-                      border="1px solid rgba(255,255,255,.4)"
-                      py="8px"
-                      pos="relative"
-                      w="100%"
-                    >
+                    <HStack py="8px" pos="relative" w="100%" fontWeight={600}>
                       <Box
                         flex={1}
                         textAlign="center"
                         onClick={() => setPrizeType(false)}
                         cursor="pointer"
-                        color={!prizeType ? "black" : "white"}
+                        color={!prizeType ? "black" : "#a1a1a1"}
                         zIndex={1}
+                        bg={prizeType ? "rgba(255,255,255, 0.1)" : "#a1a1a1"}
+                        borderRadius="10px"
+                        py="10px"
                       >
                         NFT
                       </Box>
@@ -551,12 +589,15 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         textAlign="center"
                         onClick={() => setPrizeType(true)}
                         cursor="pointer"
-                        color={!prizeType ? "white" : "black"}
+                        color={!prizeType ? "#a1a1a1" : "black"}
                         zIndex={1}
+                        bg={!prizeType ? "rgba(255,255,255, 0.1)" : "#a1a1a1"}
+                        borderRadius="10px"
+                        py="10px"
                       >
                         $APE
                       </Box>
-                      <Box
+                      {/* <Box
                         pos="absolute"
                         top="0"
                         h="100%"
@@ -564,7 +605,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         bg="#eee"
                         transform={`translateX(${!prizeType ? "0%" : "100%"})`}
                         transition="ease-out 0.2s"
-                      />
+                      /> */}
                     </HStack>
                   </VStack>
                   {!prizeType ? (
@@ -595,7 +636,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
             )}
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter zIndex={2}>
             {address ? (
               <HStack py="10px" w="100%" justifyContent="space-between">
                 <Text fontSize="14px" opacity="0.5">
@@ -609,21 +650,25 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                   {" "}
                   {!prizeType ? (
                     <Button
-                      colorScheme="blue"
+                      bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
+                      color="white"
+                      border="1px solid rgba(255,255,255,0.3)"
                       mr={3}
                       onClick={onApproveNFT}
                       isLoading={isPending || isConfirming}
                     >
-                      Approve
+                      APPROVE
                     </Button>
                   ) : null}
                   <Button
-                    colorScheme="blue"
+                    bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
+                    color="white"
+                    border="1px solid rgba(255,255,255,0.3)"
                     mr={3}
                     onClick={onCreateMatch}
                     isLoading={isPending || isConfirming}
                   >
-                    Create Match
+                    CREATE
                   </Button>
                 </HStack>
               </HStack>

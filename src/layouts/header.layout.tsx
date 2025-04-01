@@ -58,7 +58,7 @@ const Header = () => {
         maxW={MAXW}
         fontWeight={700}
         bg="black"
-        py="14px"
+        py="10px"
         px="19px"
         borderRadius="10px"
         border={
@@ -72,14 +72,39 @@ const Header = () => {
         <Hamburger />
         </HStack> */}
         <HStack>
-          <Link href="/">
+          <Link href="https://hii.link">
             <HStack pos="relative" alignItems="flex-end">
-              <Image src="/hiilink_header.avif" h="36px" />
+              <Image src="/hiilink_header.avif" h="25px" />
             </HStack>
           </Link>
         </HStack>
 
-        <HStack spacing="24px" alignItems="center">
+        <HStack
+          spacing="24px"
+          alignItems="center"
+          pos="absolute"
+          left="50%"
+          transform="translateX(-50%)"
+          display={["none", null, "flex", null]}
+        >
+          <Link href="/">
+            <Text
+              fontWeight={400}
+              fontSize="16px"
+              className={`${orbitron.className} header_gradient`}
+            >
+              Public
+            </Text>
+          </Link>
+          <Link href="/">
+            <Text
+              fontWeight={400}
+              fontSize="16px"
+              className={`${orbitron.className} header_gradient`}
+            >
+              Private
+            </Text>
+          </Link>
           <Link href="/history">
             <Text
               fontWeight={400}
@@ -89,9 +114,9 @@ const Header = () => {
               History
             </Text>
           </Link>
-          <HStack display={["none", null, "flex", null]}>
-            {address ? <AccountDetails /> : <WalletConnector />}
-          </HStack>
+        </HStack>
+        <HStack display={["none", "flex", "flex", null]}>
+          {address ? <AccountDetails /> : <WalletConnector />}
         </HStack>
       </HStack>
     </HStack>
