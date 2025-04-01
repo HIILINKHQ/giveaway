@@ -38,7 +38,7 @@ import OnGoingMatches from "@/components/ongoinMatches";
 //   },
 // ];
 
-// export type OldCompType = (typeof oldCompsData)[number];
+// export type OldCompType = (typeof  oldCompsData)[number];
 
 export default function Home() {
   return (
