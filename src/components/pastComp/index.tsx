@@ -48,7 +48,7 @@ const PastComp = ({ data, refetch }: CurrentCompProps) => {
   const [accountDetails, setAccountDetails] =
     useState<accountDetailsType>(null);
 
-  console.log("data", data);
+  // console.log("data", data);
   const toast = useToast();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const PastComp = ({ data, refetch }: CurrentCompProps) => {
       if (data.error) {
         console.error("Error fetching profile:", data.error);
       } else {
-        console.log("User Profile:", data);
+        // console.log("User Profile:", data);
         setAccountDetails(data);
       }
     }

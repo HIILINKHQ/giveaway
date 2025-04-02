@@ -19,6 +19,9 @@ import MatchEntries from "../join/MatchEntries";
 import ApecoinCard from "./ApecoinCard";
 import { useEffect, useState } from "react";
 import { accountDetailsType } from "@/layouts/accountDetails";
+import { useAccount, useReadContract } from "wagmi";
+import abi from "@/contract/abis/winpad.abi.json";
+import { apeChain } from "viem/chains";
 
 type CurrentCompProps = {
   data: {
@@ -47,8 +50,20 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
   const { prizeAddress, prizeId, totalEntries, endDate, id, entryNFTAddress } =
     data;
 
-  console.log("data", data);
+  // console.log("data", data);
   const toast = useToast();
+  const { address } = useAccount();
+  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
+
+  const { data: isJoined, refetch: isJoinedRefetch } = useReadContract({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    address: contract_addr,
+    abi,
+    functionName: "entries",
+    chainId: apeChain.id,
+    args: [id, address as `0x${string}`],
+  });
 
   useEffect(() => {
     async function fetchProfile(wallet: `0x${string}`) {
@@ -57,7 +72,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
       if (data.error) {
         console.error("Error fetching profile:", data.error);
       } else {
-        console.log("User Profile:", data);
+        // console.log("User Profile:", data);
         setAccountDetails(data);
       }
     }
@@ -178,10 +193,14 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
               bg: "linear-gradient(-90deg, rgba(34,34,34,1) 22%, rgba(78,78,78,1) 100%)",
             }}
             fontSize="14px"
-            bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
+            bg={
+              isJoined
+                ? "linear-gradient(-90deg, rgba(18,18,18,1) 32%, rgba(45,45,45,1) 100%)"
+                : "linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
+            }
             fontWeight={700}
           >
-            JOIN NOW
+            {isJoined ? "JOINED" : "JOIN NOW"}
           </Button>
           {/* <Box className="animated-border-box" _before={{backgroundImage : "conic-gradient(rgba(0, 0, 0, 0),#07daff, rgba(0, 0, 0, 0) 25%)"}}/>
         <Box className="animated-border-box-glow" _before={{backgroundImage : "conic-gradient(rgba(0, 0, 0, 0),#07daff, rgba(0, 0, 0, 0) 25%)"}}/> */}
@@ -195,7 +214,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
           zIndex={2}
         >
           <Text fontSize="10px" fontWeight={500} opacity={0.4}>
-            Created by
+            CREATED BY
           </Text>
           {accountDetails ? (
             <HStack alignItems="center" lineHeight={1}>

@@ -1,6 +1,5 @@
 import { VStack } from "@chakra-ui/react";
 import { MAXW } from "@/utils/globals";
-import Carousel from "@/components/carousel";
 import OnGoingMatches from "@/components/ongoinMatches";
 
 // const oldCompsData = [

@@ -113,7 +113,9 @@ const NFTGallery = ({
                 </AspectRatio>
 
                 <VStack w="100%">
-                  <Text>{token.token.tokenId}</Text>
+                  <Text color="rgba(255,255,255, 0.5)">
+                    {token.token.tokenId}
+                  </Text>
                   <Text noOfLines={1} w="100%" textAlign="center">
                     {token.token?.collection?.name}
                   </Text>

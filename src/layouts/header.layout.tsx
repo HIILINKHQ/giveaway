@@ -93,16 +93,7 @@ const Header = () => {
               fontSize="16px"
               className={`${orbitron.className} header_gradient`}
             >
-              Public
-            </Text>
-          </Link>
-          <Link href="/">
-            <Text
-              fontWeight={400}
-              fontSize="16px"
-              className={`${orbitron.className} header_gradient`}
-            >
-              Private
+              Ongoing
             </Text>
           </Link>
           <Link href="/history">

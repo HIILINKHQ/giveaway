@@ -36,6 +36,17 @@ const Layout = ({ children }: PropsWithChildren) => {
         left="0"
         transform="translate(50%, -70%)"
       />
+      <HStack
+        zIndex={1}
+        minW="47%"
+        h="100vh"
+        bg={"url(./pattern.avif)"}
+        pos="absolute"
+        top="0"
+        left="0"
+        transform="translate(50%, -70%)"
+        bgSize="contain"
+      />
       <Header />
       {children}
       {/* <Box className="grainy-bg" /> */}

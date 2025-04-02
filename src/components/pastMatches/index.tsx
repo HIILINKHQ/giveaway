@@ -26,21 +26,19 @@ const PastMatches = () => {
     args: [0, 100],
   });
 
-  console.log("getMatchHistory", data);
+  // console.log("getMatchHistory", data);
 
   return (
     <VStack w="100%" pt="24px" minH="100vh">
       <VStack>
         <Text
           color="white"
-          fontWeight={700}
-          fontSize="46px"
-          className={orbitron.className}
+          fontWeight={900}
+          fontSize={["50px", null, "60px", null, "70px"]}
+          fontFamily="inter"
+          textAlign="center"
         >
-          GIVEAWAYS HISTORY
-        </Text>
-        <Text color="white" fontWeight={200}>
-          Create by everyone , attend everyone.
+          GIVEAWAYS <br /> HISTORY
         </Text>
 
         {address ? (
@@ -51,12 +49,14 @@ const PastMatches = () => {
       </VStack>
       <SimpleGrid w="100%" columns={[1, 2, 3, 4]} spacing="10px" pt="20px">
         {/* eslint-disable @typescript-eslint/no-explicit-any */}
-        {(data as any)?.filter((el: { creator: string }) =>
+        {(data as any)
+          ?.filter((el: { creator: string }) =>
             isAll ? true : address ? el.creator === address : true
           )
-          ?.reverse()?.map((el: bigint) => (
-          <PastComp data={el as any} key={el} refetch={refetch} />
-        ))}
+          ?.reverse()
+          ?.map((el: bigint) => (
+            <PastComp data={el as any} key={el} refetch={refetch} />
+          ))}
       </SimpleGrid>
     </VStack>
   );

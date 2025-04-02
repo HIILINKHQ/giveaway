@@ -316,7 +316,13 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
         scrollBehavior="inside"
       >
         <ModalOverlay />
-        <ModalContent color="white" pos="relative" bg="black" overflow="hidden">
+        <ModalContent
+          color="white"
+          pos="relative"
+          bg="black"
+          overflow="hidden"
+          border="1px solid rgba(255,255,255,0.5)"
+        >
           <Box
             minW="100%"
             minH="100%"
@@ -360,7 +366,15 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                     </VStack>
                     <Input
                       type="datetime-local"
-                      onChange={(e) => setEndDate(e.target.value)}
+                      onChange={(e) => {
+                        setEndDate(e.target.value);
+                      }}
+                      min={new Date().toISOString().slice(0, 16)}
+                      max={(() => {
+                        const maxDate = new Date();
+                        maxDate.setDate(maxDate.getDate() + 10);
+                        return maxDate.toISOString().slice(0, 16);
+                      })()}
                       borderColor="#4e4e4e"
                       _focus={{
                         border: "1px solid #4e4e4e",

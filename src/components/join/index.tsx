@@ -73,7 +73,7 @@ const Join = ({
   const [entryId, setEntryId] = useState(1);
   const [tmpClicked, setTmpClicked] = useState(false);
   const [taskDetails, setTaskDetails] = useState<TaskType>(null);
-  const [collectionName, setCollectionName] = useState<string | null>(null)
+  const [collectionName, setCollectionName] = useState<string | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
@@ -109,7 +109,7 @@ const Join = ({
 
   const isEligible = isFree ? true : Number(balance) > 0;
 
-  console.log("isJoined", isJoined);
+  // console.log("isJoined", isJoined);
 
   const { writeContractAsync, isPending, data: hash } = useWriteContract();
 
@@ -120,7 +120,7 @@ const Join = ({
 
   const onJoin = async () => {
     try {
-      console.log(entryId);
+      // console.log(entryId);
       const res = await writeContractAsync({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
@@ -132,7 +132,7 @@ const Join = ({
         // value : ethers.parseUnits(value.toString(),18) this is correct!
       });
 
-      console.log("res", res);
+      // console.log("res", res);
     } catch (err) {
       console.log(err);
       toast({ title: (err as BaseError).shortMessage, status: "error" });
@@ -149,7 +149,7 @@ const Join = ({
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Task details:", data); // Task details from the response
+        // console.log("Task details:", data); // Task details from the response
         setTaskDetails(data);
       } else {
         console.log("Error:", data.error || data.message);
@@ -157,18 +157,20 @@ const Join = ({
     };
 
     async function getCollectionName(contractAddress: string) {
-      const response = await fetch(`/api/collection?contract=${contractAddress}`);
+      const response = await fetch(
+        `/api/collection?contract=${contractAddress}`
+      );
       const data = await response.json();
       if (data.error) {
         console.error("Error:", data.error);
       } else {
-        console.log("Collection Name:", data.name);
-        setCollectionName(data.name)
+        // console.log("Collection Name:", data.name);
+        setCollectionName(data.name);
       }
     }
 
     getTaskDetails(matchId);
-    getCollectionName(entryNFTAddress)
+    getCollectionName(entryNFTAddress);
   }, [matchId]);
 
   useEffect(() => {
@@ -228,9 +230,14 @@ const Join = ({
                   </Box>
                   <Text fontSize="14px">
                     The giveaway is created for &apos;
-                    <Link target="_blank" href={`https://magiceden.io/collections/apechain/${entryNFTAddress}`} style={{textDecoration : "underline"}}>{collectionName ?? formatAddress(entryNFTAddress)}</Link>
-                    &apos; addressed NFT
-                    collection holders can join.
+                    <Link
+                      target="_blank"
+                      href={`https://magiceden.io/collections/apechain/${entryNFTAddress}`}
+                      style={{ textDecoration: "underline" }}
+                    >
+                      {collectionName ?? formatAddress(entryNFTAddress)}
+                    </Link>
+                    &apos; addressed NFT collection holders can join.
                   </Text>{" "}
                 </HStack>
               </VStack>
@@ -301,23 +308,22 @@ const Join = ({
                 </Button>
               ) : (
                 <VStack w="100%">
-                 
                   {taskDetails?.taskUrl ? (
                     <Text
-                    py="4px"
-                    px="8px"
-                    borderRadius="6px"
-                    fontSize="14px"
-                    w="100%"
+                      py="4px"
+                      px="8px"
+                      borderRadius="6px"
+                      fontSize="14px"
+                      w="100%"
                       color="white"
                       border="1px solid rgba(255,255,255,.1)"
                       bg="linear-gradient(50deg,rgb(15, 15, 15),rgb(32, 32, 32))"
-                    isTruncated
+                      isTruncated
                     >
-                     <b> {taskDetails.taskType}</b> : {taskDetails?.taskUrl}
+                      <b> {taskDetails.taskType}</b> : {taskDetails?.taskUrl}
                     </Text>
                   ) : null}
-                   <Text
+                  <Text
                     fontSize="13px"
                     w="100%"
                     textAlign="center"

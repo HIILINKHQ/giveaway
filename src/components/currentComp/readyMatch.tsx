@@ -53,7 +53,7 @@ const ReadyMatch = ({ data }: CurrentCompProps) => {
       if (data.error) {
         console.error("Error fetching profile:", data.error);
       } else {
-        console.log("User Profile:", data);
+        // console.log("User Profile:", data);
         setAccountDetails(data);
       }
     }

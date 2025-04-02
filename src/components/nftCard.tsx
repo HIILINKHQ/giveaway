@@ -89,12 +89,12 @@ const NftCard = ({ contractAddress, tokenId }: NftCardProps) => {
   async function getDetails(contractAddress: string, tokenId: string) {
     let tokenData = await fetchTokens(contractAddress, tokenId);
 
-    console.log("Initial token data:", tokenData);
+    // console.log("Initial token data:", tokenData);
 
     const token = tokenData?.tokens?.[0]?.token;
 
     if (!token || !token.image) {
-      console.log("Image is missing, refreshing metadata...");
+      // console.log("Image is missing, refreshing metadata...");
       await refreshTokenMetadata(contractAddress, tokenId);
 
       // Wait for a short delay before fetching again to allow metadata to update
@@ -102,11 +102,10 @@ const NftCard = ({ contractAddress, tokenId }: NftCardProps) => {
 
       // Fetch updated token details
       tokenData = await fetchTokens(contractAddress, tokenId);
-      console.log("Updated token data:", tokenData);
+      // console.log("Updated token data:", tokenData);
     }
 
-    console.log("tokenData", tokenData);
-
+    // console.log("tokenData", tokenData);
     setTokenData(tokenData.tokens[0]);
   }
 
@@ -128,7 +127,12 @@ const NftCard = ({ contractAddress, tokenId }: NftCardProps) => {
       >
         <AspectRatio w="100%" ratio={1} borderRadius="12px" overflow="hidden">
           <Box pos="relative">
-            <Image src={tokenData?.token.image} zIndex={1} w="100%" />
+            <Image
+              src={tokenData?.token.image}
+              zIndex={1}
+              w="100%"
+              loading="lazy"
+            />
             <Skeleton pos="absolute" aspectRatio={1} w="100%" zIndex={0} />
           </Box>
         </AspectRatio>

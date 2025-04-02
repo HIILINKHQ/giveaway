@@ -27,7 +27,7 @@ export const AccountDetails = () => {
     useState<accountDetailsType>(null);
   const { address, connector } = useAccount();
 
-  const { disconnectAsync ,disconnect} = useDisconnect()
+  const { disconnectAsync, disconnect } = useDisconnect();
 
   useEffect(() => {
     async function fetchProfile(wallet: `0x${string}`) {
@@ -36,7 +36,7 @@ export const AccountDetails = () => {
       if (data.error) {
         console.error("Error fetching profile:", data.error);
       } else {
-        console.log("User Profile:", data);
+        // console.log("User Profile:", data);
         setAccountDetails(data);
       }
     }
@@ -46,8 +46,8 @@ export const AccountDetails = () => {
     }
   }, [address]);
   return (
-    <Menu >
-      <MenuButton my="auto" >
+    <Menu>
+      <MenuButton my="auto">
         <HStack alignItems="center" lineHeight={1}>
           <Box
             boxSize="24px"
@@ -60,20 +60,36 @@ export const AccountDetails = () => {
             bgPos="center"
             borderRadius="50%"
           />
-          <Text fontSize="15px" className="header_gradient"> {accountDetails?.username ?? formatAddress(address)}</Text>
+          <Text fontSize="15px" className="header_gradient">
+            {" "}
+            {accountDetails?.username ?? formatAddress(address)}
+          </Text>
           <HiChevronDown />
         </HStack>
       </MenuButton>
-      <MenuList bg="rgba(255,255,255,.1)" borderColor="rgba(255,255,255,.2)" backdropFilter="blur(6px)">
-        <Text px="14px" fontSize="12px" opacity={0.5} borderBottom="1px dashed #eee" pb="14px" pt="6px">{ formatAddress(address)}</Text>
+      <MenuList
+        bg="rgba(255,255,255,.1)"
+        borderColor="rgba(255,255,255,.2)"
+        backdropFilter="blur(6px)"
+      >
+        <Text
+          px="14px"
+          fontSize="12px"
+          opacity={0.5}
+          borderBottom="1px dashed #eee"
+          pb="14px"
+          pt="6px"
+        >
+          {formatAddress(address)}
+        </Text>
         <MenuItem
           bg="transparent"
           color="rgba(255,255,255,.6)"
           _hover={{ color: "white" }}
         >
-             <MenuIcon mr="6px">
-             <MdManageAccounts />
-            </MenuIcon>
+          <MenuIcon mr="6px">
+            <MdManageAccounts />
+          </MenuIcon>
           <Link href="/profile" style={{ width: "100%" }}>
             My account
           </Link>
@@ -82,11 +98,11 @@ export const AccountDetails = () => {
           bg="transparent"
           color="rgba(255,255,255,.6)"
           _hover={{ color: "white" }}
-          onClick={()=> disconnectAsync({connector}) }
+          onClick={() => disconnectAsync({ connector })}
         >
-            <MenuIcon mr="6px">
+          <MenuIcon mr="6px">
             <MdOutlineLogout />
-            </MenuIcon>
+          </MenuIcon>
           Log Out
         </MenuItem>
       </MenuList>
