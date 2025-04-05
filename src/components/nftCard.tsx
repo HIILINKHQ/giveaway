@@ -1,4 +1,4 @@
-import { orbitron } from "@/fonts";
+import { orbitron } from '@/fonts';
 import {
   AspectRatio,
   Box,
@@ -8,10 +8,11 @@ import {
   Skeleton,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import Link from "next/link";
-import { LuExternalLink } from "react-icons/lu";
-import { useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import Link from 'next/link';
+import { LuExternalLink } from 'react-icons/lu';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 type NftCardProps = {
   contractAddress: string;
@@ -29,16 +30,16 @@ type tokenDataType = {
 };
 
 async function fetchTokens(contractAddress: string, tokenId: string) {
-  const baseUrl = "https://api-apechain.reservoir.tools/tokens/v7";
+  const baseUrl = 'https://api-apechain.reservoir.tools/tokens/v7';
   const params = new URLSearchParams({
     tokens: `${contractAddress}:${tokenId}`,
   });
 
   try {
     const response = await fetch(`${baseUrl}?${params.toString()}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accept: "*/*",
+        Accept: '*/*',
       },
     });
 
@@ -50,21 +51,21 @@ async function fetchTokens(contractAddress: string, tokenId: string) {
 
     return data;
   } catch (error) {
-    console.error("Error fetching tokens:", error);
+    console.error('Error fetching tokens:', error);
   }
 }
 
 async function refreshTokenMetadata(contractAddress: string, tokenId: string) {
-  const REFRESH_BASE_URI = "https://api-apechain.reservoir.tools";
+  const REFRESH_BASE_URI = 'https://api-apechain.reservoir.tools';
   const tokenSet = `${contractAddress}:${tokenId}`;
 
   try {
     const response = await fetch(`${REFRESH_BASE_URI}/tokens/refresh/v2`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_RESERVOIR_API_KEY ?? "",
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR_API_KEY ?? '',
       },
       body: JSON.stringify({
         liquidityOnly: false,
@@ -78,40 +79,24 @@ async function refreshTokenMetadata(contractAddress: string, tokenId: string) {
 
     return await response.json();
   } catch (error) {
-    console.error("Error refreshing token metadata:", error);
+    console.error('Error refreshing token metadata:', error);
     return null;
   }
 }
 
 const NftCard = ({ contractAddress, tokenId }: NftCardProps) => {
-  const [tokenData, setTokenData] = useState<null | tokenDataType>(null);
-
-  async function getDetails(contractAddress: string, tokenId: string) {
-    let tokenData = await fetchTokens(contractAddress, tokenId);
-
-    // console.log("Initial token data:", tokenData);
-
-    const token = tokenData?.tokens?.[0]?.token;
-
-    if (!token || !token.image) {
-      // console.log("Image is missing, refreshing metadata...");
-      await refreshTokenMetadata(contractAddress, tokenId);
-
-      // Wait for a short delay before fetching again to allow metadata to update
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-
-      // Fetch updated token details
-      tokenData = await fetchTokens(contractAddress, tokenId);
-      // console.log("Updated token data:", tokenData);
-    }
-
-    // console.log("tokenData", tokenData);
-    setTokenData(tokenData.tokens[0]);
-  }
-
-  useEffect(() => {
-    getDetails(contractAddress, tokenId);
-  }, []);
+  const { data } = useQuery({
+    queryKey: ['nftData', contractAddress, tokenId],
+    queryFn: () => fetchTokens(contractAddress, tokenId),
+    enabled: !!contractAddress && !!tokenId,
+  });
+  const token = data?.tokens?.[0]?.token;
+  const image = token?.image;
+  const collectionName = token?.collection?.name;
+  const tokenIdValue = token?.tokenId;
+  const tokenIdNumber = tokenIdValue ? parseInt(tokenIdValue) : null;
+  const tokenIdString = tokenIdNumber ? tokenIdNumber.toString() : '';
+  const tokenIdWithHash = `#${tokenIdString}`;
 
   return (
     <Box p="1px" borderRadius="14px" pos="relative">
@@ -127,12 +112,7 @@ const NftCard = ({ contractAddress, tokenId }: NftCardProps) => {
       >
         <AspectRatio w="100%" ratio={1} borderRadius="12px" overflow="hidden">
           <Box pos="relative">
-            <Image
-              src={tokenData?.token.image}
-              zIndex={1}
-              w="100%"
-              loading="lazy"
-            />
+            <Image src={image} zIndex={1} w="100%" loading="lazy" />
             <Skeleton pos="absolute" aspectRatio={1} w="100%" zIndex={0} />
           </Box>
         </AspectRatio>
@@ -140,11 +120,11 @@ const NftCard = ({ contractAddress, tokenId }: NftCardProps) => {
         <VStack w="100%">
           <HStack justifyContent="space-between" w="100%">
             <Text fontSize="13px" isTruncated fontWeight={600}>
-              {tokenData?.token?.collection?.name}
+              {collectionName}
             </Text>
             <HStack gap="10px">
               <Text fontWeight={600} fontSize="13px">
-                #{tokenData?.token?.tokenId}
+                {tokenIdWithHash}
               </Text>
               <Link
                 href={`https://magiceden.io/item-details/apechain/${contractAddress}/${tokenId}`}
