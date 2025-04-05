@@ -1,5 +1,5 @@
-import { Box, HStack } from "@chakra-ui/react";
-import { Dispatch, SetStateAction } from "react";
+import { Box, HStack, Text } from '@chakra-ui/react';
+import { Dispatch, SetStateAction } from 'react';
 
 type MyFilterProps = {
   isAll: boolean;
@@ -8,46 +8,31 @@ type MyFilterProps = {
 
 const MyFilter = ({ isAll, setIsAll }: MyFilterProps) => {
   return (
-    <HStack
-      border="1px solid rgba(255,255,255,.4)"
-      py="8px"
-      pos="relative"
-      minW="200px"
-      maxW="200px"
-      mx="auto"
-      fontSize="14px"
-    >
-      <Box
-        flex={1}
-        textAlign="center"
+    <HStack w="100%" justifyContent="center" fontWeight={700}>
+      <Text
         onClick={() => setIsAll(true)}
+        color={isAll ? 'rgba(34,34,34,1)' : '#a1a1a1'}
+        bg={isAll ? '#a1a1a1' : 'rgba(34,34,34,1)'}
+        py="10px"
+        px="20px"
+        borderRadius="10px"
         cursor="pointer"
-        color={isAll ? "black" : "white"}
-        zIndex={1}
       >
         All
-      </Box>
-      <Box
-        flex={1}
-        textAlign="center"
+      </Text>
+      <Text
+        bg={isAll ? 'rgba(34,34,34,1)' : '#a1a1a1'}
+        color={isAll ? '#a1a1a1' : 'rgba(34,34,34,1)'}
         onClick={() => setIsAll(false)}
+        py="10px"
+        px="20px"
+        borderRadius="10px"
         cursor="pointer"
-        color={isAll ? "white" : "black"}
-        zIndex={1}
       >
         Mine
-      </Box>
-      <Box
-        pos="absolute"
-        top="0"
-        h="100%"
-        w="50%"
-        bg="#eee"
-        transform={`translateX(${isAll ? "0%" : "100%"})`}
-        transition="ease-out 0.2s"
-      />
+      </Text>
     </HStack>
   );
 };
 
-export default MyFilter
+export default MyFilter;
