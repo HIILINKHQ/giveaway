@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Modal,
@@ -31,17 +31,17 @@ import {
   Switch,
   Center,
   Select,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   useAccount,
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
-} from "wagmi";
-import { useForm, SubmitHandler } from "react-hook-form";
-import abi from "@/contract/abis/winpad.abi.json";
-import { apeChain } from "viem/chains";
-import { useEffect, useState } from "react";
+} from 'wagmi';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import abi from '@/contract/abis/winpad.abi.json';
+import { apeChain } from 'viem/chains';
+import { useEffect, useState } from 'react';
 import {
   BaseError,
   erc20Abi,
@@ -52,9 +52,9 @@ import {
   parseEther,
   parseUnits,
   zeroAddress,
-} from "viem";
-import NFTGallery from "./nftsLoader";
-import WalletConnector from "@/utils/connectKit.custom";
+} from 'viem';
+import NFTGallery from './nftsLoader';
+import WalletConnector from '@/utils/connectKit.custom';
 
 export const PickWinner = ({
   matchId,
@@ -65,7 +65,7 @@ export const PickWinner = ({
   refetch: () => void;
   isPickable: boolean;
 }) => {
-  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
+  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? '';
 
   const toast = useToast();
 
@@ -87,24 +87,24 @@ export const PickWinner = ({
         address: contract_addr,
         chainId: apeChain?.id,
         abi,
-        functionName: "pickWinner",
+        functionName: 'pickWinner',
         args: [matchId, randomSeed],
       });
 
-      console.log("res", res);
+      console.log('res', res);
       toast({
         title: `Winner Picked Successfully with random seed : ${randomSeed}`,
-        status: "success",
+        status: 'success',
       });
     } catch (err) {
       console.log(err);
-      toast({ title: (err as BaseError).shortMessage, status: "error" });
+      toast({ title: (err as BaseError).shortMessage, status: 'error' });
     }
   };
 
   useEffect(() => {
     if (isConfirmed) {
-      toast({ title: "Transaction confirmed.", status: "success" });
+      toast({ title: 'Transaction confirmed.', status: 'success' });
       refetch();
     }
   }, [isConfirmed, isConfirming]);
@@ -116,7 +116,7 @@ export const PickWinner = ({
       zIndex={1}
       bg="#181818"
       color="white"
-      _hover={{ bg: "black" }}
+      _hover={{ bg: 'black' }}
       fontSize="14px"
       onClick={onCreateMatch}
       isDisabled={!isPickable}
@@ -131,30 +131,30 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
   const { address } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [nftDetails, setNFTDetails] = useState({
-    address: "0x",
-    tokenId: "0",
+    address: '0x',
+    tokenId: '0',
   });
   const [prizeType, setPrizeType] = useState<boolean>(false); // false for 0 true for 1
   const [GAtype, setGAtype] = useState<boolean>(false); // giveaway is public or private
 
   const [nativeAmount, setNativeAmount] = useState<number>(0);
-  const [entryNFT, setEntryNFT] = useState<string>("");
+  const [entryNFT, setEntryNFT] = useState<string>('');
   const [endDate, setEndDate] = useState<string | null>(null);
-  const [taskUrl, setTaskUrl] = useState<string>("");
-  const [taskType, setTaskType] = useState<string>("follow");
+  const [taskUrl, setTaskUrl] = useState<string>('');
+  const [taskType, setTaskType] = useState<string>('follow');
 
-  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
+  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? '';
 
   const toast = useToast();
 
   const { data: CREAION_COST } = useReadContract({
     chainId: apeChain.id,
     address: contract_addr as `0x${string}`,
-    functionName: "CREATION_COST",
+    functionName: 'CREATION_COST',
     abi,
   });
 
-  console.log("CREAION_COST", CREAION_COST);
+  console.log('CREAION_COST', CREAION_COST);
   const { writeContractAsync, isPending, data: hash } = useWriteContract();
 
   const {
@@ -179,12 +179,12 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
         address: NFTaddress,
         chainId: apeChain?.id,
         abi: erc721Abi,
-        functionName: "approve",
+        functionName: 'approve',
         args: [contract_addr as `0x${string}`, BigInt(nftDetails?.tokenId)],
       });
     } catch (err) {
-      console.log("ERR on approval:", err);
-      toast({ title: (err as BaseError).shortMessage, status: "error" });
+      console.log('ERR on approval:', err);
+      toast({ title: (err as BaseError).shortMessage, status: 'error' });
     }
   };
 
@@ -192,15 +192,15 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
     try {
       if (!GAtype && !isAddress(entryNFT)) {
         toast({
-          status: "warning",
-          description: "Not valid NFT contract address.",
+          status: 'warning',
+          description: 'Not valid NFT contract address.',
         });
         return;
       }
       const _entryNFT = !GAtype ? entryNFT : zeroAddress;
 
       if (!endDate) {
-        toast({ status: "warning", description: "End date is not set." });
+        toast({ status: 'warning', description: 'End date is not set.' });
         return;
       }
 
@@ -208,9 +208,9 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
       const _endDate = Number(new Date(endDate).getTime() / 1000); // Convert to seconds
       const duration = BigInt(_endDate - currentTimestamp);
 
-      console.log("prizeType", prizeType);
+      console.log('prizeType', prizeType);
       if (!prizeType && !isAddress(nftDetails.address)) {
-        toast({ status: "warning", description: "Select NFT." });
+        toast({ status: 'warning', description: 'Select NFT.' });
         return;
       }
 
@@ -240,27 +240,26 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
         address: contract_addr,
         chainId: apeChain?.id,
         abi,
-        functionName: "createMatch",
+        functionName: 'createMatch',
         args,
         value: !prizeType ? (CREAION_COST as bigint) : BigInt(value), // fix the current creation cost
       });
 
       // console.log("res", res);
-      toast({ title: "Match created successfully.", status: "success" });
+      toast({ title: 'Match created successfully.', status: 'success' });
       onClose();
     } catch (err) {
-      console.log("ERR:", err);
-      toast({ title: (err as BaseError).shortMessage, status: "error" });
+      console.log('ERR:', err);
+      toast({ title: (err as BaseError).shortMessage, status: 'error' });
     }
   };
 
   const writeTask = async (matchId: string) => {
     // writing task to the database.
-
     if (taskUrl?.length > 0) {
-      const response = await fetch("/api/task", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/task', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           matchId,
           taskUrl,
@@ -268,20 +267,17 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
           creator: address,
         }),
       });
-
       const data = await response.json();
       console.log(data);
     }
-
-    toast({ title: "Transaction confirmed.", status: "success" });
+    toast({ title: 'Transaction confirmed.', status: 'success' });
     refetch?.();
-
     return true;
   };
 
   useEffect(() => {
     if (isConfirmed) {
-      console.log("receipt.logs[0].topics[1]", receipt.logs);
+      console.log('receipt.logs[0].topics[1]', receipt.logs);
       const matchId = receipt.logs[0].topics[1];
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
@@ -302,7 +298,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
         borderRadius="xl"
         h="100%"
         _hover={{
-          bg: "linear-gradient(90deg, rgba(158,158,158,1) 20%, rgba(36,36,36,1) 100%)",
+          bg: 'linear-gradient(90deg, rgba(158,158,158,1) 20%, rgba(36,36,36,1) 100%)',
         }}
       >
         Create Yours
@@ -342,12 +338,12 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                 pos="relative"
                 alignItems="flex-start"
                 spacing="32px"
-                flexDir={["column", null, "row", null]}
+                flexDir={['column', null, 'row', null]}
               >
                 <VStack
                   w="100%"
                   flex={1}
-                  pos={["relative", "relative", "sticky", "sticky"]}
+                  pos={['relative', 'relative', 'sticky', 'sticky']}
                   top="0"
                   spacing="20px"
                 >
@@ -377,7 +373,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                       })()}
                       borderColor="#4e4e4e"
                       _focus={{
-                        border: "1px solid #4e4e4e",
+                        border: '1px solid #4e4e4e',
                       }}
                     />
                     <Text
@@ -415,9 +411,9 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         textAlign="center"
                         onClick={() => setGAtype(true)}
                         cursor="pointer"
-                        color={GAtype ? "black" : "#a1a1a1"}
+                        color={GAtype ? 'black' : '#a1a1a1'}
                         zIndex={1}
-                        bg={GAtype ? "#a1a1a1" : "rgba(255,255,255, 0.1)"}
+                        bg={GAtype ? '#a1a1a1' : 'rgba(255,255,255, 0.1)'}
                         borderRadius="10px"
                         py="10px"
                       >
@@ -428,9 +424,9 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         textAlign="center"
                         onClick={() => setGAtype(false)}
                         cursor="pointer"
-                        color={GAtype ? "#a1a1a1" : "black"}
+                        color={GAtype ? '#a1a1a1' : 'black'}
                         zIndex={1}
-                        bg={GAtype ? "rgba(255,255,255, 0.1)" : "#a1a1a1"}
+                        bg={GAtype ? 'rgba(255,255,255, 0.1)' : '#a1a1a1'}
                         borderRadius="10px"
                         py="10px"
                       >
@@ -483,7 +479,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                           fontWeight={600}
                           textTransform="uppercase"
                         >
-                          {" "}
+                          {' '}
                           Private Giveaway
                         </Text>
                         <Text fontSize="13px" opacity={0.5} pb="16px">
@@ -496,9 +492,9 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                           bgColor="#222"
                           bg="#222"
                           border="1px solid #4e4e4e"
-                          _placeholder={{ color: "#4e4e4e", fontWeight: "600" }}
+                          _placeholder={{ color: '#4e4e4e', fontWeight: '600' }}
                           _focus={{
-                            border: "1px solid #4e4e4e",
+                            border: '1px solid #4e4e4e',
                           }}
                         />
                         <Text
@@ -534,7 +530,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         value={taskUrl}
                         bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
                         border="none"
-                        _placeholder={{ color: "#858585", fontWeight: "600" }}
+                        _placeholder={{ color: '#858585', fontWeight: '600' }}
                       />
                       <Select
                         flex={1}
@@ -545,17 +541,17 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         fontWeight={600}
                         color="black"
                       >
-                        <option style={{ color: "black" }} value="like">
-                          {" "}
+                        <option style={{ color: 'black' }} value="like">
+                          {' '}
                           Like
                         </option>
-                        <option style={{ color: "black" }} value="follow">
+                        <option style={{ color: 'black' }} value="follow">
                           Follow
                         </option>
-                        <option style={{ color: "black" }} value="retweet">
+                        <option style={{ color: 'black' }} value="retweet">
                           Retweet
                         </option>
-                        <option style={{ color: "black" }} value="comment">
+                        <option style={{ color: 'black' }} value="comment">
                           Comment
                         </option>
                       </Select>
@@ -566,7 +562,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                   <VStack
                     spacing={4}
                     w="100%"
-                    pos={["relative", "relative", "sticky", "sticky"]}
+                    pos={['relative', 'relative', 'sticky', 'sticky']}
                     top="-10px"
                     bg="black"
                     zIndex={2}
@@ -590,9 +586,9 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         textAlign="center"
                         onClick={() => setPrizeType(false)}
                         cursor="pointer"
-                        color={!prizeType ? "black" : "#a1a1a1"}
+                        color={!prizeType ? 'black' : '#a1a1a1'}
                         zIndex={1}
-                        bg={prizeType ? "rgba(255,255,255, 0.1)" : "#a1a1a1"}
+                        bg={prizeType ? 'rgba(255,255,255, 0.1)' : '#a1a1a1'}
                         borderRadius="10px"
                         py="10px"
                       >
@@ -603,9 +599,9 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
                         textAlign="center"
                         onClick={() => setPrizeType(true)}
                         cursor="pointer"
-                        color={!prizeType ? "#a1a1a1" : "black"}
+                        color={!prizeType ? '#a1a1a1' : 'black'}
                         zIndex={1}
-                        bg={!prizeType ? "rgba(255,255,255, 0.1)" : "#a1a1a1"}
+                        bg={!prizeType ? 'rgba(255,255,255, 0.1)' : '#a1a1a1'}
                         borderRadius="10px"
                         py="10px"
                       >
@@ -654,14 +650,14 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
             {address ? (
               <HStack py="10px" w="100%" justifyContent="space-between">
                 <Text fontSize="14px" opacity="0.5">
-                  Creation fee :{" "}
-                  {typeof CREAION_COST === "bigint"
+                  Creation fee :{' '}
+                  {typeof CREAION_COST === 'bigint'
                     ? formatEther(CREAION_COST)
-                    : "0"}{" "}
+                    : '0'}{' '}
                   APE
                 </Text>
                 <HStack>
-                  {" "}
+                  {' '}
                   {!prizeType ? (
                     <Button
                       bg="linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"

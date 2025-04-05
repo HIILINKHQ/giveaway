@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Modal,
@@ -18,21 +18,21 @@ import {
   Tooltip,
   Box,
   Center,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   useAccount,
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
-} from "wagmi";
-import abi from "@/contract/abis/winpad.abi.json";
-import { apeChain } from "viem/chains";
+} from 'wagmi';
+import abi from '@/contract/abis/winpad.abi.json';
+import { apeChain } from 'viem/chains';
 import React, {
   PropsWithChildren,
   ReactNode,
   useEffect,
   useState,
-} from "react";
+} from 'react';
 // import {ethers} from "ethers"
 import {
   BaseError,
@@ -40,16 +40,16 @@ import {
   formatUnits,
   ReadContractErrorType,
   zeroAddress,
-} from "viem";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+} from 'viem';
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 import {
   HiOutlineBanknotes,
   HiOutlineQuestionMarkCircle,
   HiOutlineSquare3Stack3D,
-} from "react-icons/hi2";
-import { formatAddress } from "@/utils/helpers/formatAddress";
-import WalletConnector from "@/utils/connectKit.custom";
-import Link from "next/link";
+} from 'react-icons/hi2';
+import { formatAddress } from '@/utils/helpers/formatAddress';
+import WalletConnector from '@/utils/connectKit.custom';
+import Link from 'next/link';
 
 type TaskType = {
   matchId: string;
@@ -78,7 +78,7 @@ const Join = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
 
-  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
+  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? '';
 
   const toast = useToast();
 
@@ -89,7 +89,7 @@ const Join = ({
     //@ts-ignore
     address: entryNFTAddress,
     abi: erc721Abi,
-    functionName: "balanceOf",
+    functionName: 'balanceOf',
     chainId: apeChain.id,
     args: [address as `0x${string}`],
   });
@@ -102,7 +102,7 @@ const Join = ({
     //@ts-ignore
     address: contract_addr,
     abi,
-    functionName: "entries",
+    functionName: 'entries',
     chainId: apeChain.id,
     args: [matchId, address as `0x${string}`],
   });
@@ -127,7 +127,7 @@ const Join = ({
         address: contract_addr,
         chainId: apeChain?.id,
         abi,
-        functionName: "enroll",
+        functionName: 'enroll',
         args: [matchId],
         // value : ethers.parseUnits(value.toString(),18) this is correct!
       });
@@ -135,15 +135,15 @@ const Join = ({
       // console.log("res", res);
     } catch (err) {
       console.log(err);
-      toast({ title: (err as BaseError).shortMessage, status: "error" });
+      toast({ title: (err as BaseError).shortMessage, status: 'error' });
     }
   };
 
   useEffect(() => {
     const getTaskDetails = async (matchId: string) => {
       const response = await fetch(`/api/task?matchId=${matchId}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
       });
 
       const data = await response.json();
@@ -152,7 +152,7 @@ const Join = ({
         // console.log("Task details:", data); // Task details from the response
         setTaskDetails(data);
       } else {
-        console.log("Error:", data.error || data.message);
+        console.log('Error:', data.error || data.message);
       }
     };
 
@@ -162,21 +162,21 @@ const Join = ({
       );
       const data = await response.json();
       if (data.error) {
-        console.error("Error:", data.error);
+        console.error('Error:', data.error);
       } else {
         // console.log("Collection Name:", data.name);
         setCollectionName(data.name);
       }
     }
 
-    getTaskDetails(matchId);
+    // getTaskDetails(matchId);
     getCollectionName(entryNFTAddress);
   }, [matchId]);
 
   useEffect(() => {
     if (isConfirmed) {
       refetch();
-      toast({ title: "Successfully joined.", status: "success" });
+      toast({ title: 'Successfully joined.', status: 'success' });
       isJoinedRefetch();
     }
   }, [isConfirmed, isConfirming]);
@@ -205,7 +205,7 @@ const Join = ({
             zIndex={1}
             right="24px"
             _hover={{
-              boxShadow: "0 0 4px white",
+              boxShadow: '0 0 4px white',
             }}
           />
           <ModalBody zIndex={1}>
@@ -226,19 +226,19 @@ const Join = ({
                   lineHeight={1.4}
                 >
                   <Box>
-                    <HiOutlineSquare3Stack3D size={20} />{" "}
+                    <HiOutlineSquare3Stack3D size={20} />{' '}
                   </Box>
                   <Text fontSize="14px">
                     The giveaway is created for &apos;
                     <Link
                       target="_blank"
                       href={`https://magiceden.io/collections/apechain/${entryNFTAddress}`}
-                      style={{ textDecoration: "underline" }}
+                      style={{ textDecoration: 'underline' }}
                     >
                       {collectionName ?? formatAddress(entryNFTAddress)}
                     </Link>
                     &apos; addressed NFT collection holders can join.
-                  </Text>{" "}
+                  </Text>{' '}
                 </HStack>
               </VStack>
             ) : (
@@ -258,11 +258,11 @@ const Join = ({
                   lineHeight={1.4}
                 >
                   <Box>
-                    <HiOutlineSquare3Stack3D size={20} />{" "}
+                    <HiOutlineSquare3Stack3D size={20} />{' '}
                   </Box>
                   <Text fontSize="14px">
                     This giveaways is free, everyone can join.
-                  </Text>{" "}
+                  </Text>{' '}
                 </HStack>
               </VStack>
             )}
@@ -301,7 +301,7 @@ const Join = ({
                   bg="linear-gradient(50deg,rgb(15, 15, 15),rgb(32, 32, 32))"
                   border="1px solid rgba(255,255,255,.1)"
                   _hover={{
-                    borderColor: "white",
+                    borderColor: 'white',
                   }}
                 >
                   JOIN NOW
@@ -333,21 +333,21 @@ const Join = ({
                     After completing the task, you will be available to join.
                   </Text>
                   <Link
-                    href={taskDetails?.taskUrl ?? "https://x.com/hiilink"}
+                    href={taskDetails?.taskUrl ?? 'https://x.com/hiilink'}
                     target="_blank"
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                   >
                     <Button
                       onClick={() => setTmpClicked(true)}
                       bg="linear-gradient(50deg,rgb(15, 15, 15),rgb(32, 32, 32))"
                       border="1px solid rgba(255,255,255,.1)"
                       _hover={{
-                        borderColor: "white",
+                        borderColor: 'white',
                       }}
                       colorScheme="blue"
                       w="100%"
                     >
-                      {taskDetails?.taskType ?? "Follow Hiilink"}
+                      {taskDetails?.taskType ?? 'Follow Hiilink'}
                     </Button>
                   </Link>
                 </VStack>
