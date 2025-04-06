@@ -1,13 +1,13 @@
-import { MAXW } from "@/utils/globals";
-import { Box, Center, HStack, Image, Text } from "@chakra-ui/react";
-import Link from "next/link";
-import { orbitron } from "@/fonts";
-import { useAccount, useSwitchChain } from "wagmi";
-import Hamburger from "./sideBar";
-import { useEffect, useState } from "react";
-import { apeChain } from "viem/chains";
-import WalletConnector from "@/utils/connectKit.custom";
-import { AccountDetails } from "./accountDetails";
+import { MAXW } from '@/utils/globals';
+import { Box, Center, HStack, Image, Text } from '@chakra-ui/react';
+import Link from 'next/link';
+import { orbitron } from '@/fonts';
+import { useAccount, useSwitchChain } from 'wagmi';
+import Hamburger from './sideBar';
+import { useEffect, useState } from 'react';
+import { apeChain } from 'viem/chains';
+import WalletConnector from '@/utils/connectKit.custom';
+import { AccountDetails } from './accountDetails';
 
 const Header = () => {
   const { chain, address } = useAccount();
@@ -28,9 +28,9 @@ const Header = () => {
       setIsScrolled(window.scrollY > 50); // Change threshold as needed
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -46,8 +46,8 @@ const Header = () => {
       zIndex={4}
       w="100%"
       justifyContent="center"
-      py={["40px"]}
-      px={"20px"}
+      py={['40px']}
+      px={'20px'}
 
       // bg={isScrolled ? "rgba(0,0,0,.2)" : "transparent"}
     >
@@ -63,8 +63,8 @@ const Header = () => {
         borderRadius="10px"
         border={
           isScrolled
-            ? "1px solid rgb(112, 112, 112)"
-            : "1px solid rgb(23, 25, 27)"
+            ? '1px solid rgb(112, 112, 112)'
+            : '1px solid rgb(23, 25, 27)'
         }
         transition="ease-out 0.2s"
       >
@@ -85,7 +85,7 @@ const Header = () => {
           pos="absolute"
           left="50%"
           transform="translateX(-50%)"
-          display={["none", null, "flex", null]}
+          display={['none', null, 'flex', null]}
         >
           <Link href="/">
             <Text
@@ -106,7 +106,7 @@ const Header = () => {
             </Text>
           </Link>
         </HStack>
-        <HStack display={["none", "flex", "flex", null]}>
+        <HStack display={['flex', 'flex', 'flex', null]}>
           {address ? <AccountDetails /> : <WalletConnector />}
         </HStack>
       </HStack>
