@@ -183,7 +183,7 @@ const Join = ({
 
   return (
     <>
-      <Box onClick={onOpen} w="100%">
+      <Box onClick={onOpen} w="100%" id={matchId}>
         {children}
       </Box>
 
