@@ -28,7 +28,7 @@ import OnGoingMatches from '@/components/ongoinMatches';
 //     txn: "https://apescan.io/tx/0x3cf5319f85dc19acfdfc05960946a00f9c7e45b040a629b4629478341ad4f15d",
 //   },
 //   {
-//     end_at: "3 days ago",
+//     end_at: "3 d ays ago",
 //     image_url:
 //       "https://img-cdn.magiceden.dev/autoquality:size:1024000:20:80/rs:fill:800:0:0/plain/https%3A%2F%2Fimg.reservoir.tools%2Fimages%2Fv2%2Fapechain%2F7%252FrdF%252Fe%252F0iXY8HduhRCoIehkmFeXPeOQQFbbmIPfjCY0FjwAl3ffF9Jb2N6jHSVY2iwXRiJ02Q4isNH%252BL2wTd6rlJ7Y%252BiBlS13M%252Bro%252FTbslVw15v4PBe0hJaaRZdHDgoBaZpcrNYv3bFT7P5LLG7uA%253D%253D.gif",
 //     color: "conic-gradient(rgba(0,0,0,0), #1bbfb4, rgba(0,0,0,0) 25%)",
