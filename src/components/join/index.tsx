@@ -50,6 +50,7 @@ import {
 import { formatAddress } from '@/utils/helpers/formatAddress';
 import WalletConnector from '@/utils/connectKit.custom';
 import Link from 'next/link';
+import { FaCheck, FaCopy } from 'react-icons/fa6';
 
 type TaskType = {
   matchId: string;
@@ -62,6 +63,8 @@ const Join = ({
   refetch,
   children,
   entryNFTAddress,
+  prizeAddress,
+  prizeId,
 }: {
   children: ReactNode;
   matchId: string;
@@ -69,11 +72,14 @@ const Join = ({
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<unknown, ReadContractErrorType>>;
   entryNFTAddress: string;
+  prizeAddress: string;
+  prizeId: string;
 }) => {
   const [entryId, setEntryId] = useState(1);
   const [tmpClicked, setTmpClicked] = useState(false);
   const [taskDetails, setTaskDetails] = useState<TaskType>(null);
   const [collectionName, setCollectionName] = useState<string | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
@@ -267,7 +273,14 @@ const Join = ({
               </VStack>
             )}
 
-            <VStack w="100%" spacing={0} pb="6px" pt="24px">
+            <VStack
+              w="100%"
+              spacing={0}
+              pb="6px"
+              pt="24px"
+              alignItems="center"
+              justifyContent="center"
+            >
               <Text fontSize="12px" opacity={0.6}>
                 You will pay
               </Text>
@@ -276,6 +289,30 @@ const Join = ({
                   0 $APE
                 </Text>
               </HStack>
+              <Button
+                flex={1}
+                mt={3}
+                bg="linear-gradient(50deg,rgb(15, 15, 15),rgb(32, 32, 32))"
+                border="1px solid rgba(255,255,255,.1)"
+                _hover={{
+                  borderColor: 'white',
+                }}
+                color="white"
+                textAlign="center"
+                p="10px"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://giveaway.hii.link/giveaway/${matchId}/?tokenId=${prizeId}&contract=${prizeAddress}`
+                  );
+                  setIsCopied(true);
+                  setTimeout(() => {
+                    setIsCopied(false);
+                  }, 2000);
+                }}
+                leftIcon={isCopied ? <FaCheck /> : <FaCopy />}
+              >
+                {isCopied ? 'Copied' : 'Copy link'}
+              </Button>
             </VStack>
           </ModalBody>
 

@@ -69,6 +69,7 @@ const PastMatches = () => {
       acc[`${ele.token.contract}:${ele.token.tokenId}`] = ele.token;
       return acc;
     }, {} as Record<string, any>);
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     setTokenMetadatas((prev: {}) => {
       return { ...prev, ...resultFlat };
     });

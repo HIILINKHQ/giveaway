@@ -1,6 +1,6 @@
-import { VStack } from "@chakra-ui/react";
-import { MAXW } from "@/utils/globals";
-import OnGoingMatches from "@/components/ongoinMatches";
+import { VStack } from '@chakra-ui/react';
+import { MAXW } from '@/utils/globals';
+import OnGoingMatches from '@/components/ongoinMatches';
 
 // const oldCompsData = [
 //   {
@@ -51,10 +51,9 @@ export default function Home() {
       alignItems="stretch"
       spacing="24px"
       // flexDir={["column", "column", "row", "row", null]}
-      px={["10px", null, 0, null]}
+      px={['10px', null, 0, null]}
     >
       {/* <Carousel /> */}
-
       <OnGoingMatches />
 
       {/* <PastMatches /> */}

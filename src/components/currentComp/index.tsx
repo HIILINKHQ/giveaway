@@ -1,5 +1,5 @@
 // displaying current competitions...
-"use client";
+'use client';
 
 import {
   Box,
@@ -9,19 +9,19 @@ import {
   Text,
   useToast,
   VStack,
-} from "@chakra-ui/react";
-import NftCard from "../nftCard";
-import { MAXW } from "@/utils/globals";
-import CurrentCompLoader from "./currentCompLoader";
-import Join from "../join";
-import { formatAddress } from "@/utils/helpers/formatAddress";
-import MatchEntries from "../join/MatchEntries";
-import ApecoinCard from "./ApecoinCard";
-import { useEffect, useState } from "react";
-import { accountDetailsType } from "@/layouts/accountDetails";
-import { useAccount, useReadContract } from "wagmi";
-import abi from "@/contract/abis/winpad.abi.json";
-import { apeChain } from "viem/chains";
+} from '@chakra-ui/react';
+import NftCard from '../nftCard';
+import { MAXW } from '@/utils/globals';
+import CurrentCompLoader from './currentCompLoader';
+import Join from '../join';
+import { formatAddress } from '@/utils/helpers/formatAddress';
+import MatchEntries from '../join/MatchEntries';
+import ApecoinCard from './ApecoinCard';
+import { useEffect, useState } from 'react';
+import { accountDetailsType } from '@/layouts/accountDetails';
+import { useAccount, useReadContract } from 'wagmi';
+import abi from '@/contract/abis/winpad.abi.json';
+import { apeChain } from 'viem/chains';
 
 type CurrentCompProps = {
   data: {
@@ -53,14 +53,14 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
   // console.log("data", data);
   const toast = useToast();
   const { address } = useAccount();
-  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
+  const contract_addr = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? '';
 
   const { data: isJoined, refetch: isJoinedRefetch } = useReadContract({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     address: contract_addr,
     abi,
-    functionName: "entries",
+    functionName: 'entries',
     chainId: apeChain.id,
     args: [id, address as `0x${string}`],
   });
@@ -70,7 +70,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
       const response = await fetch(`/api/profile?wallet=${wallet}`);
       const data = await response.json();
       if (data.error) {
-        console.error("Error fetching profile:", data.error);
+        console.error('Error fetching profile:', data.error);
       } else {
         // console.log("User Profile:", data);
         setAccountDetails(data);
@@ -87,6 +87,8 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
       matchId={id ?? 0n}
       refetch={refetch}
       entryNFTAddress={entryNFTAddress}
+      prizeAddress={prizeAddress}
+      prizeId={prizeId.toString()}
     >
       <VStack
         w="100%"
@@ -94,9 +96,9 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
         alignItems="stretch"
         bg="black"
         border="1px solid rgba(255,255,255,.1)"
-        px={["10px", "10px", "10px", null]}
-        py={["10px", "10px", "10px", null]}
-        borderRadius={["16px", "16px", "16px", null]}
+        px={['10px', '10px', '10px', null]}
+        py={['10px', '10px', '10px', null]}
+        borderRadius={['16px', '16px', '16px', null]}
         justifyContent="flex-start"
         flex={1}
         pos="relative"
@@ -119,8 +121,8 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
               <ApecoinCard prizeId={data.prizeId} />
             ) : (
               <NftCard
-                contractAddress={prizeAddress ?? ""}
-                tokenId={Number(prizeId).toString() ?? ""}
+                contractAddress={prizeAddress ?? ''}
+                tokenId={Number(prizeId).toString() ?? ''}
               />
             )}
             {/* <Center className={`match_card_util ${orbitron.className}`}>
@@ -190,17 +192,17 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
             zIndex={1}
             color="white"
             _hover={{
-              bg: "linear-gradient(-90deg, rgba(34,34,34,1) 22%, rgba(78,78,78,1) 100%)",
+              bg: 'linear-gradient(-90deg, rgba(34,34,34,1) 22%, rgba(78,78,78,1) 100%)',
             }}
             fontSize="14px"
             bg={
               isJoined
-                ? "linear-gradient(-90deg, rgba(18,18,18,1) 32%, rgba(45,45,45,1) 100%)"
-                : "linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)"
+                ? 'linear-gradient(-90deg, rgba(18,18,18,1) 32%, rgba(45,45,45,1) 100%)'
+                : 'linear-gradient(-90deg, rgba(34,34,34,1) 32%, rgba(78,78,78,1) 100%)'
             }
             fontWeight={700}
           >
-            {isJoined ? "JOINED" : "JOIN NOW"}
+            {isJoined ? 'JOINED' : 'JOIN NOW'}
           </Button>
           {/* <Box className="animated-border-box" _before={{backgroundImage : "conic-gradient(rgba(0, 0, 0, 0),#07daff, rgba(0, 0, 0, 0) 25%)"}}/>
         <Box className="animated-border-box-glow" _before={{backgroundImage : "conic-gradient(rgba(0, 0, 0, 0),#07daff, rgba(0, 0, 0, 0) 25%)"}}/> */}
@@ -223,7 +225,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
                 className="header_gradient"
                 fontWeight={500}
               >
-                {" "}
+                {' '}
                 {accountDetails?.username ?? formatAddress(data?.creator)}
               </Text>
               <Box
@@ -231,7 +233,7 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
                 bg={
                   accountDetails?.avatar_url?.length
                     ? `url(${accountDetails?.avatar_url})`
-                    : "#eee"
+                    : '#eee'
                 }
                 bgSize="cover"
                 bgPos="center"
@@ -240,11 +242,11 @@ const CurrentComp = ({ data, refetch }: CurrentCompProps) => {
             </HStack>
           ) : (
             <HStack>
-              {" "}
+              {' '}
               <Text fontSize="10px" fontWeight={500}>
                 {formatAddress(data?.creator)}
-              </Text>{" "}
-              <Box bg="gray" boxSize="20px" borderRadius="50%" />{" "}
+              </Text>{' '}
+              <Box bg="gray" boxSize="20px" borderRadius="50%" />{' '}
             </HStack>
           )}
         </HStack>
