@@ -1,10 +1,8 @@
-import { Box, HStack, Image, VStack } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
-import Header from "./header.layout";
-import { roboto } from "@/fonts";
-import Footer from "./footer.layout";
-import { MAXW } from "@/utils/globals";
-import { Poppins } from "next/font/google";
+import { HStack, Image, VStack } from '@chakra-ui/react';
+import { PropsWithChildren } from 'react';
+import Header from './header.layout';
+import Footer from './footer.layout';
+import { MAXW } from '@/utils/globals';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
@@ -19,7 +17,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     >
       <Image
         w={MAXW}
-        src="./background.avif"
+        src={'/background.avif'}
         pos="absolute"
         top="0"
         left="50%"
@@ -36,16 +34,15 @@ const Layout = ({ children }: PropsWithChildren) => {
         left="0"
         transform="translate(50%, -70%)"
       />
-      <HStack
+      <Image
         zIndex={1}
         minW="47%"
         h="100vh"
-        bg={"url(./pattern.avif)"}
+        src={'/pattern.avif'}
         pos="absolute"
         top="0"
         left="0"
         transform="translate(50%, -70%)"
-        bgSize="contain"
       />
       <Header />
       {children}

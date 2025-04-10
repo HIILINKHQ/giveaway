@@ -1,6 +1,10 @@
+import CurrentComp from '@/components/currentComp';
+import { Button, Text, VStack } from '@chakra-ui/react';
 import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
-import ClientRedirect from './client-redirect';
+import { useReadContract } from 'wagmi';
+import abi from '@/contract/abis/winpad.abi.json';
+import { apeChain } from 'viem/chains';
+import GiveawayComp from './giveawayHash';
 
 type Props = {
   params: { id: string };
@@ -15,7 +19,6 @@ export async function generateMetadata({
   const { tokenId, contract } = searchParams;
 
   const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?tokenId=${tokenId}&contract=${contract}`;
-  console.log(imageUrl);
 
   return {
     title: `Giveaway #${tokenId}`,
@@ -37,10 +40,15 @@ export async function generateMetadata({
 
 export default function Page({ params, searchParams }: Props) {
   const hash = `${params.id}`;
-  // redirect(`/#${hash}`);
   return (
-    <div>
-      <ClientRedirect id={hash} />
-    </div>
+    <VStack
+      minH="100vh"
+      w="100%"
+      zIndex={2}
+      justifyContent="center"
+      alignItems="center"
+    >
+      <GiveawayComp hash={hash} />
+    </VStack>
   );
 }
