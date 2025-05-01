@@ -27,8 +27,9 @@ const OnGoingMatches = () => {
     abi,
     functionName: 'getOngoingMatches',
     chainId: apeChain.id,
-    args: [0, 100],
+    args: [0, 200],
   });
+  console.log(data);
 
   const {
     data: readyMatches,
