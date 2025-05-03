@@ -156,13 +156,18 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
 
   console.log('CREAION_COST', CREAION_COST);
   const { writeContractAsync, isPending, data: hash } = useWriteContract();
+  const {
+    writeContractAsync: CreateWrite,
+    isPending: createIsPending,
+    data: createHash,
+  } = useWriteContract();
 
   const {
     isLoading: isConfirming,
     isSuccess: isConfirmed,
     data: receipt,
   } = useWaitForTransactionReceipt({
-    hash,
+    hash: createHash,
   });
 
   const _setNFTDetails = (data: { address: string; tokenId: string }) => {
@@ -234,7 +239,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
 
       console.log(value);
       console.log(args);
-      const res = await writeContractAsync({
+      const res = await CreateWrite({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         address: contract_addr,
@@ -278,7 +283,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
   useEffect(() => {
     if (isConfirmed) {
       console.log('receipt.logs[0].topics[1]', receipt.logs);
-      const matchId = receipt.logs[1].topics[1];
+      const matchId = receipt.logs[0].topics[1];
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       writeTask(matchId);
