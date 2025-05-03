@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Text,
   Button,
@@ -18,8 +18,8 @@ import {
   AspectRatio,
   Image,
   Box,
-} from "@chakra-ui/react";
-import { useAccount } from "wagmi";
+} from '@chakra-ui/react';
+import { useAccount } from 'wagmi';
 
 const NFTGallery = ({
   nftDetails: { address, tokenId: _tokenId },
@@ -36,7 +36,7 @@ const NFTGallery = ({
   const [tokens, setTokens] = useState<any[]>([]); // Array of fetched NFTs
   const [isLoadFinished, setIsLoadFinished] = useState(false);
 
-  const BASE_URI = "https://api-apechain.reservoir.tools";
+  const BASE_URI = 'https://api-apechain.reservoir.tools';
 
   const fetchNFTs = async (
     walletAddress: string,
@@ -44,10 +44,10 @@ const NFTGallery = ({
   ) => {
     try {
       setIsLoadFinished(false);
-      const limit = "100";
+      const limit = '100';
       const continuationParam = continuation
         ? `&continuation=${continuation}`
-        : "";
+        : '';
       const balanceUrl = `${BASE_URI}/users/${walletAddress}/tokens/v7?limit=${limit}${continuationParam}`;
       const balanceResponse = await fetch(balanceUrl);
       const balanceData = await balanceResponse.json();
@@ -62,7 +62,7 @@ const NFTGallery = ({
 
       setIsLoadFinished(true);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -76,13 +76,12 @@ const NFTGallery = ({
   const handleSelectNFT = (contract: string, tokenId: string) => {
     setNFTDetails({ address: contract, tokenId });
   };
-
   return (
     <VStack w="100%" align="flex-start" spacing={4}>
       <HStack alignItems="center">
         <Text fontSize="2xl" fontWeight="bold">
           Your NFTs
-        </Text>{" "}
+        </Text>{' '}
         <Text fontSize="14px" opacity={0.5} pt="6px">
           / {tokens?.length} found /
         </Text>
@@ -129,9 +128,9 @@ const NFTGallery = ({
                     onClick={() =>
                       handleSelectNFT(token.token.contract, token.token.tokenId)
                     }
-                    variant={isSelected ? "outline" : "solid"}
+                    variant={isSelected ? 'outline' : 'solid'}
                   >
-                    {isSelected ? "Selected" : "Select"}
+                    {isSelected ? 'Selected' : 'Select'}
                   </Button>
                 </VStack>
               </VStack>

@@ -155,7 +155,7 @@ const Join = ({
       const data = await response.json();
 
       if (response.ok) {
-        // console.log("Task details:", data); // Task details from the response
+        // Task details from the response
         setTaskDetails(data);
       } else {
         console.log('Error:', data.error || data.message);
@@ -170,12 +170,12 @@ const Join = ({
       if (data.error) {
         console.error('Error:', data.error);
       } else {
-        // console.log("Collection Name:", data.name);
+        // console.log('Collection Name:', data.name);
         setCollectionName(data.name);
       }
     }
 
-    // getTaskDetails(matchId);
+    getTaskDetails(matchId);
     getCollectionName(entryNFTAddress);
   }, [matchId]);
 

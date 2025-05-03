@@ -26,7 +26,7 @@ const PastMatches = () => {
     abi,
     functionName: 'getMatchHistory',
     chainId: apeChain.id,
-    args: [0, 100],
+    args: [0, 300],
   });
 
   async function fetchTokensInBatches() {
