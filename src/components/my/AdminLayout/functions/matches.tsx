@@ -157,17 +157,11 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
   console.log('CREAION_COST', CREAION_COST);
   const { writeContractAsync, isPending, data: hash } = useWriteContract();
   const {
-    writeContractAsync: CreateWrite,
-    isPending: createIsPending,
-    data: createHash,
-  } = useWriteContract();
-
-  const {
     isLoading: isConfirming,
     isSuccess: isConfirmed,
     data: receipt,
   } = useWaitForTransactionReceipt({
-    hash: createHash,
+    hash,
   });
 
   const _setNFTDetails = (data: { address: string; tokenId: string }) => {
@@ -239,7 +233,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
 
       console.log(value);
       console.log(args);
-      const res = await CreateWrite({
+      const res = await writeContractAsync({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         address: contract_addr,
@@ -282,8 +276,12 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
 
   useEffect(() => {
     if (isConfirmed) {
-      console.log('receipt.logs[0].topics[1]', receipt.logs);
-      const matchId = receipt.logs[0].topics[1];
+      console.log(receipt.logs, contract_addr);
+      const [giveaway] = receipt.logs.filter(
+        (e) => e.address === contract_addr.toLocaleLowerCase()
+      );
+      console.log('giveaway', giveaway?.topics[1]);
+      const matchId = giveaway?.topics[1];
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       writeTask(matchId);
