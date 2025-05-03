@@ -278,7 +278,7 @@ const CreateMatch = ({ refetch }: { refetch?: any }) => {
   useEffect(() => {
     if (isConfirmed) {
       console.log('receipt.logs[0].topics[1]', receipt.logs);
-      const matchId = receipt.logs[0].topics[1];
+      const matchId = receipt.logs[1].topics[1];
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       writeTask(matchId);
