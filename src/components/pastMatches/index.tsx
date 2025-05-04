@@ -80,7 +80,7 @@ const PastMatches = () => {
       fetchTokensInBatches();
     }
   }, [isLoading]);
-
+  console.log(data);
   return (
     <VStack w="100%" pt="24px" minH="100vh">
       <VStack>
