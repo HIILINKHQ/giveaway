@@ -42,7 +42,7 @@ const OnGoingMatches = () => {
     abi,
     functionName: 'getReadyMatches',
     chainId: apeChain.id,
-    args: [0, 100],
+    args: [0, 300],
   });
 
   async function fetchTokensInBatches() {
@@ -50,11 +50,15 @@ const OnGoingMatches = () => {
     const datas = (data as any).map(
       (el: any) => `${el.prizeAddress}:${el.prizeId}`
     );
+    const readyDatas = (readyMatches as any).map(
+      (el: any) => `${el.prizeAddress}:${el.prizeId}`
+    );
+    const allDatas = [...datas, ...readyDatas];
 
     // Split into chunks of 50
     const chunks: string[][] = [];
-    for (let i = 0; i < datas.length; i += MAX_BATCH_SIZE) {
-      chunks.push(datas.slice(i, i + MAX_BATCH_SIZE));
+    for (let i = 0; i < allDatas.length; i += MAX_BATCH_SIZE) {
+      chunks.push(allDatas.slice(i, i + MAX_BATCH_SIZE));
     }
 
     // Helper to fetch one chunk
