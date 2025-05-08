@@ -42,7 +42,7 @@ const OnGoingMatches = () => {
     abi,
     functionName: 'getReadyMatches',
     chainId: apeChain.id,
-    args: [0, 300],
+    args: [0, 100],
   });
 
   async function fetchTokensInBatches() {
