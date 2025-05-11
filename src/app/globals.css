@@ -1,7 +1,6 @@
 html,
 body {
   background: #000;
-  font-family: var(--font-poppins) !important;
 }
 
 .dot_animated {
@@ -36,7 +35,7 @@ body {
 }
 
 .header_link::after {
-  content: " ";
+  content: ' ';
   width: 0%;
   height: 1px;
   position: absolute;
@@ -145,7 +144,7 @@ body {
 
 .animated-border-box:before,
 .animated-border-box-glow:before {
-  content: "";
+  content: '';
   z-index: -2;
   text-align: center;
   top: 50%;
@@ -167,7 +166,7 @@ body {
 }
 
 .animated-border-box:after {
-  content: "";
+  content: '';
   position: absolute;
   z-index: -1;
   /* border width */
